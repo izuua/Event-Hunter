@@ -1,7 +1,7 @@
 // Starts a query when the "Search" button is clicked
-$("#button-search").on("click", function () {
-    var keyword = $("#input-search").val().trim()
-    $("#input-search").val("")
+$("#js-btn-search").on("click", function () {
+    var keyword = $("#js-input-search").val().trim()
+    $("#js-input-search").val("")
 
     var queryURL = "https://app.ticketmaster.com/discovery/v2/events?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&keyword=" + keyword + "&locale=*&includeSpellcheck=yes"
 
@@ -14,7 +14,7 @@ $("#button-search").on("click", function () {
         console.log(searchData)
 
         // Clears old search results
-        $("#results-grid").empty()
+        $("#js-results").empty()
 
         // Creates cards for each matching result
         for (let i = 0; i < searchData.events.length; i++) {
@@ -31,7 +31,7 @@ $("#button-search").on("click", function () {
                 )
             )
 
-            $("#results-grid").append(newCard)
+            $("#js-results").append(newCard)
         }
     })
 })
