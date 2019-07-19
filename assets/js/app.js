@@ -34,6 +34,11 @@ $("#js-btn-search").on("click", function (event) {
 
             // add exception handling for no results
 
+            //if (res_embedded === undefined || res_embedded === null) {
+                //shows div saying "No results found"
+                //return 0;
+            // }
+
             // Creates cards for each matching result
             for (let i = 0; i < searchData.events.length; i++) {
                 var newCard = $("<div class='col-12 col-md-6 col-lg-3'>").append(

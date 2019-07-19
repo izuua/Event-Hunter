@@ -37,15 +37,15 @@
       <div class="container">
         <div class="row mt-4">
           <div class="col mx-auto">
-            <form class="text-center">
+            <form class="text-center" id="js-form-search">
               <label for="js-input-search">Search</label>
               <div class="input-group">
                 <input type="text" class="form-control"
-                  id="js-input-search"
-                  aria-label="Text input with dropdown button">
+                  id="js-input-search" required
+                  aria-label="Text input with dropdown button" placeholder="Search for an event...">
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary"
-                    type="button" id="js-btn-search"> Search</button>
+                    type="submit" id="js-btn-search"><i class="fas fa-search"></i> Search</button>
                 </div>
               </div>
             </form>
@@ -55,6 +55,11 @@
 
       <!-- Results Grid -->
       <div class="container">
+        <div class="row" id="js-display-row" style="display: none;">
+          <div class="col-12">
+            <h1>Showing results for <span id="js-display-input"></span></h1>
+          </div>
+        </div>
         <div id="js-results" class="row"></div>
       </div>
     </main>
@@ -66,5 +71,6 @@
       </div>
     </footer>
 
+    <script src="assets/js/app.js"></script>
   </body>
 </html>
