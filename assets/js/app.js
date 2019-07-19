@@ -3,9 +3,6 @@ $("#button-search").on("click", function () {
     var keyword = $("#input-search").val().trim()
     $("#input-search").val("")
 
-    var category = $("#input-category").val()
-    console.log(category)
-
     var queryURL = "https://app.ticketmaster.com/discovery/v2/events?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&keyword=" + keyword + "&locale=*&includeSpellcheck=yes"
 
     $.ajax({
