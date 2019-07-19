@@ -21,6 +21,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/d376955e9a.js"></script>
+
 </head>
 
 <body>
@@ -92,7 +93,7 @@
             </div>
         </div>
     </div>
-
+    
 
 
     <!-- Footer -->
@@ -101,6 +102,18 @@
             <span class="text-muted text-center">Footer</span>
         </div>
     </footer>
+
+    <script src="assets/js/app.js"></script>
+
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6IPesL5mF0DDtWul2MrIQStLtaEwwfyI&callback=initMap">
+        </script>
+
 </body>
 
 </html>
