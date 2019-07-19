@@ -34,7 +34,7 @@ $("#js-btn-search").on("click", function (event) {
 
             // add exception handling for no results
 
-            //if (res_embedded === undefined || res_embedded === null) {
+            //if (res._embedded === undefined || res._embedded === null) {
                 //shows div saying "No results found"
                 //return 0;
             // }
@@ -42,7 +42,7 @@ $("#js-btn-search").on("click", function (event) {
             // Creates cards for each matching result
             for (let i = 0; i < searchData.events.length; i++) {
                 var newCard = $("<div class='col-12 col-md-6 col-lg-3'>").append(
-                    $("<a href='#' class='card-link' data-event-id='" + searchData.events[i].id + "'>").append(
+                    $("<a href='./details.html' class='card-link' data-event-id='" + searchData.events[i].id + "'>").append(
                         $("<div class='card'>").append(
                             $("<img src='" + searchData.events[i].images[0].url + "' alt='" + searchData.events[i].name + "' class='card-img-top'>"),
                             $("<div class='card-body'>").append(
