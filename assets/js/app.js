@@ -1,28 +1,23 @@
 // Starts a query when the "Search" button is clicked
 $("#js-btn-search").on("click", function (event) {
-
-    //prevent default
-    //call checkInput
-    //if .val() === ""
-
     event.preventDefault()
+
     var keyword = $("#js-input-search").val().trim()
+
     // Clears old search results
     $("#js-results").empty()
+    $("#js-form-search")[0].reset();
 
+    // Checks if user made an input
     if (keyword === "") {
-        // $("#js-input-search").val("")
-        $("#js-form-search")[0].reset();
-        $("#js-display-row").hide()
-        console.log("works", keyword)
         console.log("didnt search")
+        $("#js-display-row").hide()
     } else {
         console.log("did search")
         $("#js-display-input").text(keyword)
         $("#js-display-row").show()
 
         var queryURL = "https://app.ticketmaster.com/discovery/v2/events?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&keyword=" + keyword + "&locale=*&includeSpellcheck=yes"
-
 
         $.ajax({
             url: queryURL,
@@ -34,9 +29,9 @@ $("#js-btn-search").on("click", function (event) {
 
             // add exception handling for no results
 
-            //if (res._embedded === undefined || res._embedded === null) {
-                //shows div saying "No results found"
-                //return 0;
+            //if (searchData === undefined || res._embedded === null) {
+            //shows div saying "No results found"
+            //return 0;
             // }
 
             // Creates cards for each matching result
@@ -53,7 +48,6 @@ $("#js-btn-search").on("click", function (event) {
                         )
                     )
                 )
-
                 $("#js-results").append(newCard)
             }
         })
@@ -72,3 +66,46 @@ function initMap() {
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({ position: location, map: map });
 }
+
+// Stores data needed for details.html
+$(document).on("click", ".card-link", function () {
+    // Store the event id
+    var id = $(this).attr("data-event-id")
+    localStorage.clear()
+    localStorage.setItem("id", id)
+})
+
+// Gets event details after the user selects an event and moves to details.html
+$(document).ready(function () {
+    // Current brower href
+    var pageRef = window.location.href
+
+    // Checks if details.html or index.html is active
+    if (pageRef.search("details") === -1) {
+        console.log("You are on the index page")
+    } else {
+        console.log("Details page!!!")
+        var detailsID = localStorage.getItem("id")
+        var queryURL = "https://app.ticketmaster.com/discovery/v2/events/" + detailsID + "?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&locale=*&includeSpellcheck=yes"
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (res) {
+            console.log(res)
+
+            // Adds info to the brief section
+            $("#js-brief-event").text(res.name)
+            $("#js-brief-date").text(res.dates.start.localDate)
+            $("#js-brief-time").text(res.dates.start.localTime)
+            $("#js-brief-location").text(res._embedded.venues[0].name)
+
+            // Adds info to the details section
+            $("#js-details-event").text(res.name)
+            $("#js-details-date").text(res.dates.start.localDate)
+            $("#js-details-location").text(res._embedded.venues[0].name)
+            $("#js-details-tickets").text(res.url)
+            $("#js-details-genre").text(res.classifications[0].genre.name)
+        })
+    }
+})
