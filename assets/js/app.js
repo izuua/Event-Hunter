@@ -4,6 +4,7 @@
 
 // Starts a query when the "Search" button is clicked
 var searchData;
+var searchDataNext;
 
 var siteURL = 'http://127.0.0.1:5500/Project-1/';
 
@@ -34,13 +35,17 @@ function initMap() {
 
 function initWeather(lat, lng) {
 
-    var queryURL = "api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lng + "&APPID=" + openWeatherKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lng + "&APPID=" + openWeatherKey;
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (res) {
-        
+
+        var temp = (res.main.temp * (9 / 5) - 459.67).toFixed(1)
+        var desc = res.weather[0].description
+        $("#js-details-temp").html(temp + "&deg")
+        $("#js-details-weather").text(desc)
     })
 }
 
@@ -78,6 +83,8 @@ function mainSearch() {
             searchData = res._embedded;
             console.log(res);
             console.log(searchData);
+
+            searchDataNext = res._links.next.href
 
             // Creates cards for each matching result
             for (let i = 0; i < searchData.events.length; i++) {
@@ -268,3 +275,79 @@ $(document).ready(function () {
         });
     }
 });
+
+$(window).scroll(function () {
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - 1) {
+        var queryURL =
+            'https://app.ticketmaster.com' + searchDataNext + '&apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5'
+
+        $.ajax({
+            url: queryURL,
+            method: 'GET'
+        }).then(function (res) {
+            searchData = res._embedded;
+            console.log(res);
+            console.log(searchData);
+            searchDataNext = res._links.next.href
+
+            // Creates cards for each matching result
+            for (let i = 0; i < searchData.events.length; i++) {
+                var minWidth = 1000;
+                var imgFound = false;
+                var imgUrl;
+                for (let j = 0; j < searchData.events[i].images.length; j++) {
+                    if (
+                        searchData.events[i].images[j].width >= minWidth &&
+                        searchData.events[i].images[j].ratio === '16_9'
+                    ) {
+                        imgUrl = searchData.events[i].images[j].url;
+                        imgFound = true;
+                    }
+                }
+                if (!imgFound) {
+                    imgUrl = searchData.events[i].images[0].url;
+                }
+                console.log('card making running');
+                var newCard = $(
+                    "<div class='col-12 col-md-6 col-lg-3'>"
+                ).append(
+                    $(
+                        "<a href='./details.html' target=_blank class='card-link' data-event-id='" +
+                        searchData.events[i].id +
+                        "' data-event-lat='" +
+                        searchData.events[i]._embedded.venues[0].location
+                            .latitude +
+                        "' data-event-lng='" +
+                        searchData.events[i]._embedded.venues[0].location
+                            .longitude +
+                        "'>"
+                    ).append(
+                        $("<div class='card'>").append(
+                            $(
+                                "<img src='" +
+                                imgUrl +
+                                "' alt='" +
+                                searchData.events[i].name +
+                                "' class='card-img-top'>"
+                            ),
+                            $("<div class='card-body'>").append(
+                                $("<h5 class='card-title'>").text(
+                                    searchData.events[i].name
+                                ),
+                                $("<p class='card-text'>").text(
+                                    searchData.events[i].dates.start.localDate
+                                ),
+                                $("<p class='card-text'>").text(
+                                    searchData.events[i]._embedded.venues[0].name
+                                )
+                            )
+                        )
+                    )
+                );
+                $('#js-results').append(newCard);
+            }
+        });
+
+    }
+});
+
