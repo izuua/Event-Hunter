@@ -1,316 +1,232 @@
+//==================================================
+// VARIABLES
+//--------------------------------------------------
+
 // Starts a query when the "Search" button is clicked
+var searchData;
 
-var searchData
+var siteURL = 'http://127.0.0.1:5501/Project-1/';
 
-$("#js-btn-search").on("click", function (event) {
-    event.preventDefault()
+//==================================================
+// FUNCTIONS
+//--------------------------------------------------
 
-    var keyword = $("#js-input-search").val().trim()
+function initMap() {
+	// The location of the venue
+	var location = {
+		lat : parseFloat(localStorage.getItem('lat')),
+		lng : parseFloat(localStorage.getItem('lng'))
+	};
+	// The map, centered at the venue
+	var map = new google.maps.Map(document.getElementById('js-map'), {
+		zoom   : 15,
+		center : location
+	});
+	// The marker, positioned at the venue
+	var marker = new google.maps.Marker({
+		position : location,
+		map      : map
+	});
+}
 
-    // Clears old search results
-    $("#js-results").empty()
-    $("#js-form-search")[0].reset();
+function searchDetails() {
+	var searchKeyword = $('#js-input-details-search').val().trim();
+	localStorage.setItem('searchKeyword', searchKeyword);
+	location.href = siteURL + 'index.html';
+}
 
-    // Checks if user made an input
-    if (keyword === "") {
-        console.log("didnt search")
-        $("#js-display-row").hide()
-    } else {
-        console.log("did search")
-        $("#js-display-input").text(keyword)
-        $("#js-display-row").show()
+function mainSearch() {
+	var keyword = $('#js-input-search').val().trim();
 
-        var queryURL = "https://app.ticketmaster.com/discovery/v2/events?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&keyword=" + keyword + "&locale=*&includeSpellcheck=yes"
+	// Clears old search results
+	$('#js-results').empty();
+	$('#js-form-search')[0].reset();
 
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).then(function (res) {
-            searchData = res._embedded
-            console.log(res)
-            console.log(searchData)
+	// Checks if user made an input
+	if (keyword === '') {
+		console.log('didnt search');
+		$('#js-display-row').hide();
+	} else {
+		console.log('did search');
+		$('#js-display-input').text(keyword);
+		$('#js-display-row').show();
 
-            // add exception handling for no results
+		var queryURL =
+			'https://app.ticketmaster.com/discovery/v2/events?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&keyword=' +
+			keyword +
+			'&locale=*&includeSpellcheck=yes';
 
-            //if (searchData === undefined || res._embedded === null) {
-            //shows div saying "No results found"
-            //return 0;
-            // }
+		$.ajax({
+			url    : queryURL,
+			method : 'GET'
+		}).then(function(res) {
+			searchData = res._embedded;
+			console.log(res);
+			console.log(searchData);
 
+			// Creates cards for each matching result
+			for (let i = 0; i < searchData.events.length; i++) {
+				var minWidth = 1000;
+				var imgFound = false;
+				var imgUrl;
+				for (let j = 0; j < searchData.events[i].images.length; j++) {
+					if (
+						searchData.events[i].images[j].width >= minWidth &&
+						searchData.events[i].images[j].ratio === '16_9'
+					) {
+						imgUrl = searchData.events[i].images[j].url;
+						imgFound = true;
+					}
+				}
+				if (!imgFound) {
+					imgUrl = searchData.events[i].images[0].url;
+				}
+				console.log('card making running');
+				var newCard = $(
+					"<div class='col-12 col-md-6 col-lg-3'>"
+				).append(
+					$(
+						"<a href='./details.html' target=_blank class='card-link' data-event-id='" +
+							searchData.events[i].id +
+							"' data-event-lat='" +
+							searchData.events[i]._embedded.venues[0].location
+								.latitude +
+							"' data-event-lng='" +
+							searchData.events[i]._embedded.venues[0].location
+								.longitude +
+							"'>"
+					).append(
+						$("<div class='card'>").append(
+							$(
+								"<img src='" +
+									imgUrl +
+									"' alt='" +
+									searchData.events[i].name +
+									"' class='card-img-top'>"
+							),
+							$("<div class='card-body'>").append(
+								$("<h5 class='card-title'>").text(
+									searchData.events[i].name
+								),
+								$("<p class='card-text'>").text(
+									searchData.events[i].dates.start.localDate
+								),
+								$("<p class='card-text'>").text(
+									searchData.events[i]._embedded.venues[0].name
+								)
+							)
+						)
+					)
+				);
+				$('#js-results').append(newCard);
+			}
+		});
+	}
+}
 
-            // Creates cards for each matching result
-            for (let i = 0; i < searchData.events.length; i++) {
-                var minWidth = 1000
-                var imgFound = false
-                var imgUrl
-                for (let j = 0; j < searchData.events[i].images.length; j++) {
-                    if (searchData.events[i].images[j].width >= minWidth && searchData.events[i].images[j].ratio === "16_9") {
-                        imgUrl = searchData.events[i].images[j].url
-                        imgFound = true
-                    }
-                }
-                if (!imgFound) {
-                    imgUrl = searchData.events[i].images[0].url
-                }
-                console.log("card making running");
-                var newCard = $("<div class='col-12 col-md-6 col-lg-3'>").append(
-                    $("<a href='./details.html' target=_blank class='card-link' data-event-id='" + searchData.events[i].id + "' data-event-lat='" + searchData.events[i]._embedded.venues[0].location.latitude + "' data-event-lng='" + searchData.events[i]._embedded.venues[0].location.longitude + "'>").append(
-                        $("<div class='card'>").append(
-                            $("<img src='" + imgUrl + "' alt='" + searchData.events[i].name + "' class='card-img-top'>"),
-                            $("<div class='card-body'>").append(
-                                $("<h5 class='card-title'>").text(searchData.events[i].name),
-                                $("<p class='card-text'>").text(searchData.events[i].dates.start.localDate),
-                                $("<p class='card-text'>").text(searchData.events[i]._embedded.venues[0].name)
-                            )
-                        )
-                    )
-                )
-                $("#js-results").append(newCard)
-            }
-        })
-    }
-})
+//==================================================
+// APP INIT
+//--------------------------------------------------
+
+$('#js-btn-search').on('click', function(e) {
+	e.preventDefault();
+	mainSearch();
+});
 
 // Stores data needed for details.html
-$(document).on("click", ".card-link", function () {
-    // Store the event id, lat and lng
-    var id = $(this).attr("data-event-id")
-    var lat = $(this).attr("data-event-lat")
-    var lng = $(this).attr("data-event-lng")
-    localStorage.clear()
-    localStorage.setItem("id", id)
-    localStorage.setItem("lat", lat)
-    localStorage.setItem("lng", lng)
-})
+$('#js-results').on('click', '.card-link', function() {
+	// Store the event id, lat and lng
+	var id = $(this).attr('data-event-id');
+	var lat = $(this).attr('data-event-lat');
+	var lng = $(this).attr('data-event-lng');
+	localStorage.clear();
+	localStorage.setItem('id', id);
+	localStorage.setItem('lat', lat);
+	localStorage.setItem('lng', lng);
+});
 
 function checkForValue(object, keyName, textNode) {
-    console.log(object, keyName, textNode)
-    if (_.has(object, keyName)) {
-        $(textNode).text(object[keyName])
-    } else {
-        $(textNode).text("Information not found.")
-    }
+	console.log(object, keyName, textNode);
+	if (_.has(object, keyName)) {
+		$(textNode).text(object[keyName]);
+	} else {
+		$(textNode).text('Information not found.');
+	}
 }
 
 // Gets event details after the user selects an event and moves to details.html
-$(document).ready(function () {
-    // Current brower href
-    var pageRef = window.location.href
+$(document).ready(function() {
+	// Current brower href
+	var pageRef = window.location.href;
 
-    // Checks if details.html or index.html is active
-    if (pageRef.search("details") === -1) {
-        console.log("You are on the index page")
-    } else {
-        console.log("Details page!!!")
-        var detailsID = localStorage.getItem("id")
-        var queryURL = "https://app.ticketmaster.com/discovery/v2/events/" + detailsID + "?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&locale=*&includeSpellcheck=yes"
+	// Checks if details.html or index.html is active
+	if (pageRef.search('details') === -1) {
+		console.log('You are on the index page');
+		if (localStorage.getItem('searchKeyword')) {
+			$('#js-input-search').val(
+				localStorage.getItem('searchKeyword')
+			);
+			mainSearch();
+			localStorage.removeItem('searchKeyword');
+		}
+	} else {
+		console.log('Details page!!!');
+		$('#js-btn-details-search').on('click', function(e) {
+			e.preventDefault();
+			searchDetails();
+		});
 
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).then(function (res) {
-            searchData = res._embedded
-            console.log(res)
-            console.log(searchData)
+		var detailsID = localStorage.getItem('id');
+		var queryURL =
+			'https://app.ticketmaster.com/discovery/v2/events/' +
+			detailsID +
+			'?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&locale=*&includeSpellcheck=yes';
 
-            // Adds info to the brief section
-            checkForValue(res, "name", "#js-brief-event")
-            checkForValue(res.dates.start, "localDate", "#js-brief-date")
-            $("#js-brief-time").text(moment(res.dates.start.localTime, "HH:mm:SS").format("hh:mm A"))
-            checkForValue(res._embedded.venues[0], "name", "#js-brief-location")
-            checkForValue(res._embedded.venues[0].address, "line1", "#js-brief-address")
+		$.ajax({
+			url    : queryURL,
+			method : 'GET'
+		}).then(function(res) {
+			searchData = res._embedded;
+			console.log(res);
+			console.log(searchData);
 
-            // Adds info to the details section
-            checkForValue(res, "name", "#js-details-event")
-            checkForValue(res.dates.start, "localDate", "#js-details-date")
-            checkForValue(res._embedded.venues[0], "name", "#js-details-location")
-            $("#js-details-tickets").html("<a href=" + res.url + " target='_blank'>Click Here")
-            checkForValue(res.classifications[0].segment, "name", "#js-details-genre")
-            checkForValue(res, "pleaseNote", "#js-details-note")
-            checkForValue(res, "info", "#js-details-info")
-        })
-    }
-})
+			// Adds info to the brief section
+			checkForValue(res, 'name', '#js-brief-event');
+			checkForValue(res.dates.start, 'localDate', '#js-brief-date');
+			$('#js-brief-time').text(
+				moment(res.dates.start.localTime, 'HH:mm:SS').format(
+					'hh:mm A'
+				)
+			);
+			checkForValue(
+				res._embedded.venues[0],
+				'name',
+				'#js-brief-location'
+			);
+			checkForValue(
+				res._embedded.venues[0].address,
+				'line1',
+				'#js-brief-address'
+			);
 
-
-// // Initialize and add the map
-function initMap() {
-    // The location of the venue
-    var location = { lat: parseFloat(localStorage.getItem("lat")), lng: parseFloat(localStorage.getItem("lng")) };
-    // The map, centered at the venue
-    var map = new google.maps.Map(
-        document.getElementById('js-map'), { zoom: 15, center: location });
-    // The marker, positioned at the venue
-    var marker = new google.maps.Marker({ position: location, map: map });
-}
-
-//Authentication starts here
-
-var firebaseConfig = {
-    apiKey: "AIzaSyCw9lyWmANirY8e0lScYwItOsKhe9msPHY",
-        authDomain: "event-hunter-b65f8.firebaseapp.com",
-        databaseURL: "https://event-hunter-b65f8.firebaseio.com",
-        projectId: "event-hunter-b65f8",
-        storageBucket: "event-hunter-b65f8.appspot.com",
-        messagingSenderId: "689067768056",
-        appId: "1:689067768056:web:251025be5532700a"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-/**
- * Handles the sign in button press.
- */
-function toggleSignIn() {
-  if (firebase.auth().currentUser) {
-    // [START signout]
-    firebase.auth().signOut();
-    // [END signout]
-  } else {
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-    if (email.length < 4) {
-      alert('Please enter an email address.');
-      return;
-    }
-    if (password.length < 4) {
-      alert('Please enter a password.');
-      return;
-    }
-    // Sign in with email and pass.
-    // [START authwithemail]
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // [START_EXCLUDE]
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
-      } else {
-        alert(errorMessage);
-      }
-      console.log(error);
-      document.getElementById('quickstart-sign-in').disabled = false;
-      // [END_EXCLUDE]
-    });
-    // [END authwithemail]
-  }
-  document.getElementById('quickstart-sign-in').disabled = true;
-}
-/**
- * Handles the sign up button press.
- */
-function handleSignUp() {
-  var email = document.getElementById('email').value;
-  var password = document.getElementById('password').value;
-  if (email.length < 4) {
-    alert('Please enter an email address.');
-    return;
-  }
-  if (password.length < 4) {
-    alert('Please enter a password.');
-    return;
-  }
-  // Sign in with email and pass.
-  // [START createwithemail]
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // [START_EXCLUDE]
-    if (errorCode == 'auth/weak-password') {
-      alert('The password is too weak.');
-    } else {
-      alert(errorMessage);
-    }
-    console.log(error);
-    // [END_EXCLUDE]
-  });
-  // [END createwithemail]
-}
-/**
- * Sends an email verification to the user.
- */
-function sendEmailVerification() {
-  // [START sendemailverification]
-  firebase.auth().currentUser.sendEmailVerification().then(function() {
-    // Email Verification sent!
-    // [START_EXCLUDE]
-    alert('Email Verification Sent!');
-    // [END_EXCLUDE]
-  });
-  // [END sendemailverification]
-}
-function sendPasswordReset() {
-  var email = document.getElementById('email').value;
-  // [START sendpasswordemail]
-  firebase.auth().sendPasswordResetEmail(email).then(function() {
-    // Password Reset Email Sent!
-    // [START_EXCLUDE]
-    alert('Password Reset Email Sent!');
-    // [END_EXCLUDE]
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // [START_EXCLUDE]
-    if (errorCode == 'auth/invalid-email') {
-      alert(errorMessage);
-    } else if (errorCode == 'auth/user-not-found') {
-      alert(errorMessage);
-    }
-    console.log(error);
-    // [END_EXCLUDE]
-  });
-  // [END sendpasswordemail];
-}
-/**
- * initApp handles setting up UI event listeners and registering Firebase auth listeners:
- *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
- *    out, and that is where we update the UI.
- */
-function initApp() {
-  // Listening for auth state changes.
-  // [START authstatelistener]
-  firebase.auth().onAuthStateChanged(function(user) {
-    // [START_EXCLUDE silent]
-    document.getElementById('quickstart-verify-email').disabled = true;
-    // [END_EXCLUDE]
-    if (user) {
-      // User is signed in.
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      var providerData = user.providerData;
-      // [START_EXCLUDE]
-      document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-      document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-      document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
-      if (!emailVerified) {
-        document.getElementById('quickstart-verify-email').disabled = false;
-      }
-      // [END_EXCLUDE]
-    } else {
-      // User is signed out.
-      // [START_EXCLUDE]
-      document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-      document.getElementById('quickstart-sign-in').textContent = 'Sign in';
-      document.getElementById('quickstart-account-details').textContent = 'null';
-      // [END_EXCLUDE]
-    }
-    // [START_EXCLUDE silent]
-    document.getElementById('quickstart-sign-in').disabled = false;
-    // [END_EXCLUDE]
-  });
-  // [END authstatelistener]
-  document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
-  document.getElementById('quickstart-sign-up').addEventListener('click', handleSignUp, false);
-  document.getElementById('quickstart-verify-email').addEventListener('click', sendEmailVerification, false);
-  document.getElementById('quickstart-password-reset').addEventListener('click', sendPasswordReset, false);
-}
-window.onload = function() {
-  initApp();
-};
-
+			// Adds info to the details section
+			checkForValue(res, 'name', '#js-details-event');
+			checkForValue(res.dates.start, 'localDate', '#js-details-date');
+			checkForValue(
+				res._embedded.venues[0],
+				'name',
+				'#js-details-location'
+			);
+			$('#js-details-tickets').html(
+				'<a href=' + res.url + " target='_blank'>Click Here"
+			);
+			checkForValue(
+				res.classifications[0].segment,
+				'name',
+				'#js-details-genre'
+			);
+			checkForValue(res, 'pleaseNote', '#js-details-note');
+			checkForValue(res, 'info', '#js-details-info');
+		});
+	}
+});

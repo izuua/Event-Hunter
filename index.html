@@ -1,157 +1,86 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
       initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Event Hunter | Search</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Hunter | Search</title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-  <script src="https://kit.fontawesome.com/d376955e9a.js"></script>
-
-  <!-- Added Moment JS -->
-  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-  <script
-      src="https://www.gstatic.com/firebasejs/6.3.1/firebase-app.js"></script>
+    <link rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
     <script
-      src="https://www.gstatic.com/firebasejs/6.3.1/firebase-auth.js"></script>
-    <!-- <script src="/__/firebase/init.js"></script> -->
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/d376955e9a.js"></script>
+    <!-- Added Moment JS -->
+    <script
+      src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+  </head>
 
-</head>
+  <body class="d-flex flex-column h-100">
 
-<body class="d-flex flex-column h-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light fixed-top">
+      <span class="navbar-brand mb-0 h1">Event Hunter</span>
+    </nav>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-light bg-light fixed-top">
-    <span class="navbar-brand mb-0 h1">Event Hunter</span>
-  </nav>
+    <main class="mt-5">
 
-  <main class="mt-5">
-
-      <div class="demo-layout mdl-layout mdl-js-layout
-      mdl-layout--fixed-header">
-
-      <!-- Header section containing title -->
-      <header class="mdl-layout__header mdl-color-text--white
-        mdl-color--light-blue-700">
-        <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet
-          mdl-grid">
-          <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col
-            mdl-cell--12-col-tablet mdl-cell--8-col-desktop">
-            <a href="/"><h3>Firebase Authentication</h3></a>
-          </div>
-        </div>
-      </header>
-
-      <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet
-          mdl-grid">
-
-          <!-- Container for the demo -->
-          <div class="mdl-card mdl-shadow--2dp mdl-cell
-            mdl-cell--12-col mdl-cell--12-col-tablet
-            mdl-cell--12-col-desktop">
-            <div class="mdl-card__title mdl-color--light-blue-600
-              mdl-color-text--white">
-              <h2 class="mdl-card__title-text">Firebase Email &amp;
-                Password Authentication</h2>
-            </div>
-            <div class="mdl-card__supporting-text
-              mdl-color-text--grey-600">
-              <p>Enter an email and password below and either sign in
-                to an existing account or sign up</p>
-
-              <input class="mdl-textfield__input"
-                style="display:inline;width:auto;" type="text"
-                id="email" name="email" placeholder="Email" />
-              &nbsp;&nbsp;&nbsp;
-              <input class="mdl-textfield__input"
-                style="display:inline;width:auto;" type="password"
-                id="password" name="password" placeholder="Password"
-                />
-              <br/><br/>
-                  <button disabled class="mdl-button mdl-js-button
-                    mdl-button--raised" id="quickstart-sign-in"
-                    name="signin">Sign In</button>
-                  &nbsp;&nbsp;&nbsp;
-                  <button class="mdl-button mdl-js-button
-                    mdl-button--raised" id="quickstart-sign-up"
-                    name="signup">Sign Up</button>
-                  &nbsp;&nbsp;&nbsp;
-                  <button class="mdl-button mdl-js-button
-                    mdl-button--raised" disabled
-                    id="quickstart-verify-email" name="verify-email">Send
-                    Email Verification</button>
-                  &nbsp;&nbsp;&nbsp;
-                  <button class="mdl-button mdl-js-button
-                    mdl-button--raised" id="quickstart-password-reset"
-                    name="verify-email">Send Password Reset Email</button>
-                  <!-- Container where we'll display the user details -->
-                  <div class="quickstart-user-details-container">
-                    Firebase sign-in status: <span
-                      id="quickstart-sign-in-status">Unknown</span>
-                    <div>Firebase auth <code>currentUser</code> object
-                      value:</div>
-                    <pre><code id="quickstart-account-details">null</code></pre>
-                  </div>
+      <!-- Search Bar -->
+      <div class="container">
+        <div class="row mt-4">
+          <div class="col mx-auto">
+            <form class="text-center" id="js-form-search">
+              <label for="js-input-search">Search</label>
+              <div class="input-group">
+                <input type="text" class="form-control"
+                  id="js-input-search" required
+                  aria-label="Text input with dropdown button"
+                  placeholder="Search for an event...">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary"
+                    type="submit" id="js-btn-search"><i class="fas
+                      fa-search"></i>
+                    Search</button>
                 </div>
               </div>
-
-            </div>
-          </main>
-        </div>
-
-    <!-- Search Bar -->
-    <div class="container">
-      <div class="row mt-4">
-        <div class="col mx-auto">
-          <form class="text-center" id="js-form-search">
-            <label for="js-input-search">Search</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="js-input-search" required
-                aria-label="Text input with dropdown button" placeholder="Search for an event...">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit" id="js-btn-search"><i class="fas fa-search"></i>
-                  Search</button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Results Grid -->
-    <div class="container">
-      <div class="row" id="js-display-row" style="display: none;">
-        <div class="col-12">
-          <h1>Showing results for <span id="js-display-input"></span></h1>
+      <!-- Results Grid -->
+      <div class="container">
+        <div class="row" id="js-display-row" style="display: none;">
+          <div class="col-12">
+            <h1>Showing results for <span id="js-display-input"></span></h1>
+          </div>
         </div>
+        <div id="js-results" class="row"></div>
       </div>
-      <div id="js-results" class="row"></div>
-    </div>
-  </main>
+    </main>
 
-  
 
-  <!-- Footer -->
-  <footer class="mt-auto">
-    <div class="container">
-      <span class="text-muted text-center">Footer</span>
-    </div>
-  </footer>
 
-  <script src="assets/js/app.js"></script>
-</body>
+    <!-- Footer -->
+    <footer class="mt-auto">
+      <div class="container">
+        <span class="text-muted text-center">Footer</span>
+      </div>
+    </footer>
+
+    <script src="assets/js/app.js"></script>
+  </body>
 
 </html>
