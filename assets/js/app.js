@@ -40,11 +40,23 @@ $("#js-btn-search").on("click", function (event) {
 
             // Creates cards for each matching result
             for (let i = 0; i < searchData.events.length; i++) {
+                var minWidth = 1000
+                var imgFound = false
+                var imgUrl
+                for (let j = 0; j < searchData.events[i].images.length; j++) {
+                    if (searchData.events[i].images[j].width >= minWidth && searchData.events[i].images[j].ratio === "16_9") {
+                        imgUrl = searchData.events[i].images[j].url
+                        imgFound = true
+                    }
+                }
+                if (!imgFound) {
+                    imgUrl = searchData.events[i].images[0].url
+                }
                 console.log("card making running");
                 var newCard = $("<div class='col-12 col-md-6 col-lg-3'>").append(
                     $("<a href='./details.html' target=_blank class='card-link' data-event-id='" + searchData.events[i].id + "' data-event-lat='" + searchData.events[i]._embedded.venues[0].location.latitude + "' data-event-lng='" + searchData.events[i]._embedded.venues[0].location.longitude + "'>").append(
                         $("<div class='card'>").append(
-                            $("<img src='" + searchData.events[i].images[0].url + "' alt='" + searchData.events[i].name + "' class='card-img-top'>"),
+                            $("<img src='" + imgUrl + "' alt='" + searchData.events[i].name + "' class='card-img-top'>"),
                             $("<div class='card-body'>").append(
                                 $("<h5 class='card-title'>").text(searchData.events[i].name),
                                 $("<p class='card-text'>").text(searchData.events[i].dates.start.localDate),
