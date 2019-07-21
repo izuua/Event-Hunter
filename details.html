@@ -26,6 +26,7 @@
       src="https://www.gstatic.com/firebasejs/6.3.1/firebase-auth.js"></script>
     <!-- <script src="/__/firebase/init.js"></script> -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
 </head>
 
 <body>
@@ -136,6 +137,7 @@
                         <p class="card-text">Start Time: <span id="js-brief-time"></span></p>
                         <!-- Picture of Map -->
                         <p class="card-tex">Location: <span id="js-brief-location"></span></p>
+                        <p class="card-tex">Address: <span id="js-brief-address"></span></p>
                     </div>
                     <div class="card-img-top" style="background: pink; height: 150px;" id="js-map"></div>
                 </div>
@@ -151,10 +153,9 @@
                         <!-- Price Ranges, Limit, and Link for Presale/Public Tickets -->
                         <p class="card-tex">Ticket Sales: <span id="js-details-tickets"></span></p>
                         <!-- Link to Seatmap -->
-                        <p class="card-tex">Seatmap</p>
                         <p class="card-tex">Genre: <span id="js-details-genre"></span></p>
-                        <p class="card-tex">Disclaimer</p>
-                        <p class="card-tex">Information</p>
+                        <p class="card-tex">Disclaimer: <span id="js-details-note"></span></p>
+                        <p class="card-tex">Information: <span id="js-details-info"></span></p>
                     </div>
                 </div>
             </div>
