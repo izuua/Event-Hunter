@@ -26,6 +26,8 @@
 		<!-- Added Moment JS -->
 		<script
 			src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
 	</head>
 
 	<body>
@@ -53,19 +55,8 @@
 						</div>
 					</div>
 				</form>
-				<!-- <form class="form-inline my-2 my-lg-0">
-                <div>Search</div>
-                <div class="input-group">
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" id="js-btn-search"><i
-                                class="fas fa-search"></i> Search</button>
-                    </div>
-                </div>
-            </form> -->
 			</div>
 		</nav>
-
 
 		<!-- Grid -->
 		<div class="container">
@@ -73,18 +64,15 @@
 				<div class="col-12 col-md-3 mx-auto">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title">Event Title: <span
-									id="js-brief-event"></span></h5>
-							<p class="card-text">Date: <span
-									id="js-brief-date"></span></p>
-							<p class="card-text">Start Time: <span
-									id="js-brief-time"></span></p>
+							<h5 class="card-title">Event Title: <span id="js-brief-event"></span></h5>
+							<p class="card-text">Date: <span id="js-brief-date"></span></p>
+							<p class="card-text">Start Time: <span id="js-brief-time"></span></p>
 							<!-- Picture of Map -->
-							<p class="card-tex">Location: <span
-									id="js-brief-location"></span></p>
+							<p class="card-tex">Location: <span id="js-brief-location"></span></p>
+							<p class="card-tex">Address: <span id="js-brief-address"></span></p>
 						</div>
-						<div class="card-img-top" style="background:
-							pink; height: 150px;" id="js-map"></div>
+						<div class="card-img-top" style="background: pink; height:
+							150px;" id="js-map"></div>
 					</div>
 				</div>
 				<div class="col-12 col-md-9 mx-auto">
@@ -93,25 +81,20 @@
 						<div class="card-body">
 							<h5 class="card-title">Event Title: <span
 									id="js-details-event"></span></h5>
-							<p class="card-text">Date: <span
-									id="js-details-date"></span></p>
-							<p class="card-text">Location: <span
-									id="js-details-location"></span></p>
+							<p class="card-text">Date: <span id="js-details-date"></span></p>
+							<p class="card-text">Location: <span id="js-details-location"></span></p>
 							<!-- Price Ranges, Limit, and Link for Presale/Public Tickets -->
 							<p class="card-tex">Ticket Sales: <span
 									id="js-details-tickets"></span></p>
 							<!-- Link to Seatmap -->
-							<p class="card-tex">Seatmap</p>
-							<p class="card-tex">Genre: <span
-									id="js-details-genre"></span></p>
-							<p class="card-tex">Disclaimer</p>
-							<p class="card-tex">Information</p>
+							<p class="card-tex">Genre: <span id="js-details-genre"></span></p>
+							<p class="card-tex">Disclaimer: <span id="js-details-note"></span></p>
+							<p class="card-tex">Information: <span id="js-details-info"></span></p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 
 		<!-- Footer -->
 		<footer class="mt-auto">
@@ -122,11 +105,6 @@
 
 		<script src="./assets/js/app.js"></script>
 
-		<!--Load the API from the specified URL
-    * The async attribute allows the browser to render the page while the API loads
-    * The key parameter will contain your own API key (which is not needed for this tutorial)
-    * The callback parameter executes the initMap() function
-    -->
 		<script async defer
 			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6IPesL5mF0DDtWul2MrIQStLtaEwwfyI&callback=initMap">
         </script>

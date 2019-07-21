@@ -64,15 +64,23 @@ function mainSearch() {
 			console.log(res);
 			console.log(searchData);
 
-			// add exception handling for no results
-
-			//if (searchData === undefined || res._embedded === null) {
-			//shows div saying "No results found"
-			//return 0;
-			// }
-
 			// Creates cards for each matching result
 			for (let i = 0; i < searchData.events.length; i++) {
+				var minWidth = 1000;
+				var imgFound = false;
+				var imgUrl;
+				for (let j = 0; j < searchData.events[i].images.length; j++) {
+					if (
+						searchData.events[i].images[j].width >= minWidth &&
+						searchData.events[i].images[j].ratio === '16_9'
+					) {
+						imgUrl = searchData.events[i].images[j].url;
+						imgFound = true;
+					}
+				}
+				if (!imgFound) {
+					imgUrl = searchData.events[i].images[0].url;
+				}
 				console.log('card making running');
 				var newCard = $(
 					"<div class='col-12 col-md-6 col-lg-3'>"
@@ -91,7 +99,7 @@ function mainSearch() {
 						$("<div class='card'>").append(
 							$(
 								"<img src='" +
-									searchData.events[i].images[0].url +
+									imgUrl +
 									"' alt='" +
 									searchData.events[i].name +
 									"' class='card-img-top'>"
@@ -137,6 +145,15 @@ $('#js-results').on('click', '.card-link', function() {
 	localStorage.setItem('lng', lng);
 });
 
+function checkForValue(object, keyName, textNode) {
+	console.log(object, keyName, textNode);
+	if (_.has(object, keyName)) {
+		$(textNode).text(object[keyName]);
+	} else {
+		$(textNode).text('Information not found.');
+	}
+}
+
 // Gets event details after the user selects an event and moves to details.html
 $(document).ready(function() {
 	// Current brower href
@@ -174,24 +191,42 @@ $(document).ready(function() {
 			console.log(searchData);
 
 			// Adds info to the brief section
-			$('#js-brief-event').text(res.name);
-			$('#js-brief-date').text(res.dates.start.localDate);
+			checkForValue(res, 'name', '#js-brief-event');
+			checkForValue(res.dates.start, 'localDate', '#js-brief-date');
 			$('#js-brief-time').text(
 				moment(res.dates.start.localTime, 'HH:mm:SS').format(
 					'hh:mm A'
 				)
 			);
-			$('#js-brief-location').text(res._embedded.venues[0].name);
+			checkForValue(
+				res._embedded.venues[0],
+				'name',
+				'#js-brief-location'
+			);
+			checkForValue(
+				res._embedded.venues[0].address,
+				'line1',
+				'#js-brief-address'
+			);
+
 			// Adds info to the details section
-			$('#js-details-event').text(res.name);
-			$('#js-details-date').text(res.dates.start.localDate);
-			$('#js-details-location').text(res._embedded.venues[0].name);
+			checkForValue(res, 'name', '#js-details-event');
+			checkForValue(res.dates.start, 'localDate', '#js-details-date');
+			checkForValue(
+				res._embedded.venues[0],
+				'name',
+				'#js-details-location'
+			);
 			$('#js-details-tickets').html(
 				'<a href=' + res.url + " target='_blank'>Click Here"
 			);
-			$('#js-details-genre').text(res.classifications[0].genre.name);
+			checkForValue(
+				res.classifications[0].segment,
+				'name',
+				'#js-details-genre'
+			);
+			checkForValue(res, 'pleaseNote', '#js-details-note');
+			checkForValue(res, 'info', '#js-details-info');
 		});
 	}
 });
-
-// // Initialize and add the map
