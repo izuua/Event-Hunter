@@ -115,7 +115,7 @@ function initMap() {
     var location = { lat: parseFloat(localStorage.getItem("lat")), lng: parseFloat(localStorage.getItem("lng")) };
     // The map, centered at the venue
     var map = new google.maps.Map(
-        document.getElementById('js-map'), { zoom: 4, center: location });
+        document.getElementById('js-map'), { zoom: 15, center: location });
     // The marker, positioned at the venue
     var marker = new google.maps.Marker({ position: location, map: map });
 }
