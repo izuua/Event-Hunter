@@ -11,7 +11,7 @@ body {
 }
 
 .navbar-brand {
-	color: $contrast-color;
+	color: $primary-color;
 }
 
 /* Input */
@@ -47,3 +47,26 @@ body {
 }
 
 /* Result Cards */
+
+.result__header{
+    margin: 1em 0;
+}
+
+.result__key{
+    color: $accent-color;
+
+}
+
+.result__card {
+    color: $contrast-color;
+    &:hover, &:focus{
+         background-color: $accent-color;
+         color: $primary-color;
+         box-shadow: 0 0 0 0.2rem $accent-color-trans;
+    }  
+}
+
+.footer{
+    background-color: $accent-color;
+    color: $primary-color;
+}
