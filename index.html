@@ -34,7 +34,7 @@
   <body class="d-flex flex-column h-100">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-light bg-light fixed-top">
+    <nav class="navbar fixed-top">
       <span class="navbar-brand mb-0 h1">Event Hunter</span>
     </nav>
 
@@ -47,25 +47,25 @@
           <div class="col mx-auto">
             <form class="text-center" id="js-form-search">
               <div class="input-group">
-                <input type="text" class="form-control"
+                <input type="text" class="form-control input"
                   id="js-input-search" required
                   aria-label="Search"
                   placeholder="Search for an event...">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary"
+                  <button class="btn btn-outline-secondary input__btn"
                     type="submit" id="js-btn-search">
                     <i class="fas fa-search"></i> Search</button>
                 </div>
               </div>
             </form>
           </div>
-          
+
         </div>
       </div>
 
       <!-- Results Grid -->
       <div class="container">
-        <div class="row" id="js-display-row" style="display: none;">
+        <div class="row " id="js-display-row" style="display: none;">
           <div class="col-12">
             <h1>Showing results for <span id="js-display-input"></span></h1>
           </div>

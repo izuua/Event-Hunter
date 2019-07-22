@@ -1,7 +1,49 @@
 @import "variables";
 
-@media (min-width: 768px) {
-	.card--fixed {
-		color: pink;
+/* Set Up */
+body {
+	background-color: $primary-color;
+}
+
+/* Navbar */
+.navbar {
+	background-color: $accent-color;
+}
+
+.navbar-brand {
+	color: $contrast-color;
+}
+
+/* Input */
+.input {
+	outline: none;
+	border-color: $accent-color;
+	color: $contrast-color;
+
+	&:focus,
+	&:active {
+		color: $contrast-color;
+		box-shadow: 0 0 0 0.2rem $accent-color-trans;
 	}
 }
+
+.input__btn {
+	border-color: $accent-color;
+	color: $contrast-color;
+
+	&:hover,
+	&:focus {
+		background-color: $accent-color;
+		border-color: $accent-color;
+		color: $primary-color;
+		box-shadow: 0 0 0 0.2rem $accent-color-trans;
+	}
+
+	&:not(:disabled):not(.disabled):active {
+		background-color: $accent-color-dark;
+		border-color: $accent-color-dark;
+		box-shadow: 0 0 0 0.2rem $accent-color-dark-trans !important;
+	}
+}
+
+/* Result Cards */
