@@ -47,26 +47,26 @@ body {
 }
 
 /* Result Cards */
-
-.result__header{
-    margin: 1em 0;
+.result__header {
+	margin: 1em 0;
 }
 
-.result__key{
-    color: $accent-color;
+.result__key {
+	color: $accent-color;
 }
 
 .result__card {
-    color: $contrast-color;
-    transition: all 300ms;
-    &:hover, &:focus{
-         background-color: $accent-color;
-         color: $primary-color;
-         box-shadow: 0 0 0 0.2rem $accent-color-trans;
-    }  
+	color: $contrast-color;
+	transition: all 300ms;
+	&:hover,
+	&:focus {
+		background-color: $accent-color;
+		color: $primary-color;
+		box-shadow: 0 0 0 0.2rem $accent-color-trans;
+	}
 }
 
-.footer{
-    background-color: $accent-color;
-    color: $primary-color;
+.footer {
+	background-color: $accent-color;
+	color: $primary-color;
 }
