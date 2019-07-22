@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,
 			initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Event Hunter | Details</title>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Event Hunter | Details</title>
 
 		<link rel="stylesheet"
 			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -31,79 +31,90 @@
 			src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
 	</head>
 
-<body class="d-flex flex-column h-100">
+	<body class="d-flex flex-column h-100">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-light bg-light navbar-expand-lg">
-        <span class="navbar-brand mb-0 h1">Event Hunter</span>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-search">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-search">
-            <form class="text-center" id="js-form-search">
-                <label for="js-input-details-search">Search</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="js-input-details-search" required aria-label="Text input with dropdown
+		<!-- Navbar -->
+		<nav class="navbar navbar-light bg-light navbar-expand-lg">
+			<span class="navbar-brand mb-0 h1">Event Hunter</span>
+			<button class="navbar-toggler" data-toggle="collapse"
+				data-target="#navbar-search">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbar-search">
+				<form class="text-center" id="js-form-search">
+					<label for="js-input-details-search">Search</label>
+					<div class="input-group">
+						<input type="text" class="form-control"
+							id="js-input-details-search" required aria-label="Text input
+							with dropdown
 							button" placeholder="Search for an event...">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" id="js-btn-details-search">
-                            <i class="fas fa-search"></i> Search</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </nav>
+						<div class="input-group-append">
+							<button class="btn btn-outline-secondary" type="submit"
+								id="js-btn-details-search">
+								<i class="fas fa-search"></i> Search</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</nav>
 
-    <!-- Grid -->
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-3 mx-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Event Title: <span id="js-brief-event"></span></h5>
-                        <p class="card-text">Date: <span id="js-brief-date"></span></p>
-                        <p class="card-text">Start Time: <span id="js-brief-time"></span></p>
-                        <!-- Picture of Map -->
-                        <p class="card-tex">Location: <span id="js-brief-location"></span></p>
-                        <p class="card-tex">Address: <span id="js-brief-address"></span></p>
-                    </div>
-                    <div class="card-img-top" style="background: pink; height:
-							150px;" id="js-map"></div>
-                </div>
-            </div>
-            <div class="col-12 col-md-9 mx-auto">
-                <div class="card">
-                    <img src="#" alt="" class="card-img-top" id="js-details-image">
-                    <div class="card-body">
-                        <h5 class="card-title">Event Title: <span id="js-details-event"></span></h5>
-                        <p class="card-text">Date: <span id="js-details-date"></span></p>
-                        <p class="card-text">Temperature: <span id="js-details-temp"></span></p>
-                        <p class="card-text">Weather Description: <span id="js-details-weather"></span></p>
-                        <p class="card-text">Location: <span id="js-details-location"></span></p>
-                        <!-- Price Ranges, Limit, and Link for Presale/Public Tickets -->
-                        <p class="card-tex">Ticket Sales: <span id="js-details-tickets"></span></p>
-                        <!-- Link to Seatmap -->
-                        <p class="card-tex">Genre: <span id="js-details-genre"></span></p>
-                        <p class="card-tex">Disclaimer: <span id="js-details-note"></span></p>
-                        <p class="card-tex">Information: <span id="js-details-info"></span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<h3 class="card-title">Event Title: <span
+							id="js-details-event"></span></h3>
+				</div>
+			</div>
+			<div class="row">
 
-    <!-- Footer -->
-    <footer class="mt-auto">
-        <div class="container">
-            <span class="text-muted text-center">Footer</span>
-        </div>
-    </footer>
+				<!-- Brief -->
+				<div class="col-12 col-md-4 col-lg-3 mx-auto card--fixed">
+					<div class="card">
+						<div class="card-body">
+							<p class="card-text">Date: <span id="js-brief-date"></span></p>
+							<p class="card-text">Start Time: <span id="js-brief-time"></span></p>
+							<!-- Picture of Map -->
+							<p class="card-tex">Location: <span id="js-brief-location"></span></p>
+							<p class="card-tex">Address: <span id="js-brief-address"></span></p>
+						</div>
+						<div class="card-img-top" style="height: 250px;" id="js-map"></div>
+					</div>
+				</div>
 
-    <script src="./assets/js/app.js"></script>
+				<!-- Details -->
+				<div class="col-12 col-md-8 col-lg-9 mx-auto">
+					<div class="card">
+						<img src="#" alt="" class="card-img-top" id="js-details-image">
+						<div class="card-body">
+							<p class="card-text">Temperature: <span id="js-details-temp"></span></p>
+							<p class="card-text">Weather Description: <span
+									id="js-details-weather"></span></p>
+							<!-- Price Ranges, Limit, and Link for Presale/Public Tickets -->
+							<p class="card-tex">Ticket Sales: <span
+									id="js-details-tickets"></span></p>
+							<!-- Link to Seatmap -->
+							<p class="card-tex">Genre: <span id="js-details-genre"></span></p>
+							<p class="card-tex">Disclaimer: <span id="js-details-note"></span></p>
+							<p class="card-tex">Information: <span id="js-details-info"></span></p>
+						</div>
+					</div>
+				</div>
 
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6IPesL5mF0DDtWul2MrIQStLtaEwwfyI&callback=initMap">
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="mt-auto">
+			<div class="container">
+				<span class="text-muted text-center">Footer</span>
+			</div>
+		</footer>
+
+		<script src="./assets/js/app.js"></script>
+
+		<script async defer
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6IPesL5mF0DDtWul2MrIQStLtaEwwfyI&callback=initMap">
         </script>
-</body>
+	</body>
 
 </html>
