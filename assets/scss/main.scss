@@ -1,1 +1,7 @@
 @import "variables";
+
+@media (min-width: 768px) {
+	.card--fixed {
+		color: pink;
+	}
+}
