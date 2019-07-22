@@ -13,30 +13,32 @@ var openWeatherKey = "280deca1e7bba83d640479281597834f";
 //--------------------------------------------------
 
 function initMap() {
-  var currentUrl = new URL(window.location);
-  var searchParams = new URLSearchParams(currentUrl.search);
-  // The location of the venue
-  var location = {
-    lat: parseFloat(searchParams.get("lat")),
-    lng: parseFloat(searchParams.get("lng"))
-  };
+    var currentUrl = new URL(window.location);
+    var searchParams = new URLSearchParams(currentUrl.search);
+    // The location of the venue
+    var location = {
+        lat: parseFloat(searchParams.get("lat")),
+        lng: parseFloat(searchParams.get("lng"))
+    };
 
-  initWeather(location.lat, location.lng)
+    initWeather(location.lat, location.lng)
 
-  // The map, centered at the venue
-  var map = new google.maps.Map(document.getElementById('js-map'), {
-    zoom: 15,
-    center: location
-  });
-  // The marker, positioned at the venue
-  var marker = new google.maps.Marker({
-    position: location,
-    map: map
-  });
+    // The map, centered at the venue
+    var map = new google.maps.Map(document.getElementById('js-map'), {
+        zoom: 15,
+        center: location
+    });
+    // The marker, positioned at the venue
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
 }
 
 function initWeather(lat, lng) {
 
+
+   
   if (lat) {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lng + "&APPID=" + openWeatherKey;
 
@@ -63,25 +65,26 @@ function searchDetails() {
 }
 
 function grabImg(imgArray) {
-  var minWidth = 1000;
-  var imgFound = false;
-  var imgUrl;
-  for (let j = 0; j < imgArray.length; j++) {
-    if (
-      imgArray[j].width >= minWidth &&
-      imgArray[j].ratio === '16_9'
-    ) {
-      imgUrl = imgArray[j].url;
-      imgFound = true;
+    var minWidth = 1000;
+    var imgFound = false;
+    var imgUrl;
+    for (let j = 0; j < imgArray.length; j++) {
+        if (
+            imgArray[j].width >= minWidth &&
+            imgArray[j].ratio === '16_9'
+        ) {
+            imgUrl = imgArray[j].url;
+            imgFound = true;
+        }
     }
-  }
-  if (!imgFound) {
-    imgUrl = imgArray[0].url;
-  }
-  return imgUrl
+    if (!imgFound) {
+        imgUrl = imgArray[0].url;
+    }
+    return imgUrl
 }
 
 function mainSearch() {
+  
   var keyword = $('#js-input-search').val().trim();
 
   // Clears old search results
@@ -127,7 +130,7 @@ function mainSearch() {
           "<div class='col-12 col-md-6 col-lg-3'>"
         ).append(
           $("<a href='./details.html?id=" + searchData.events[i].id + "&lat=" + eventLat + "&lng=" + eventLng + "' target=_blank class='card-link'>").append(
-            $("<div class='card'>").append(
+            $("<div class='card result__card mb-md-3 mb-4'>").append(
               $(
                 "<img src='" +
                 imgUrl +
@@ -163,21 +166,22 @@ function mainSearch() {
 //--------------------------------------------------
 
 $('#js-btn-search').on('click', function (e) {
-  e.preventDefault();
-  mainSearch();
+    e.preventDefault();
+    mainSearch();
 });
 
 
 function checkForValue(object, keyName, textNode) {
-  if (_.has(object, keyName)) {
-    $(textNode).text(object[keyName]);
-  } else {
-    $(textNode).text('Information not found.');
-  }
+    if (_.has(object, keyName)) {
+        $(textNode).text(object[keyName]);
+    } else {
+        $(textNode).text('Information not found.');
+    }
 }
 
 // Gets event details after the user selects an event and moves to details.html
 $(document).ready(function () {
+
   // Current brower href
   var pageRef = window.location.href;
   var currentUrl = new URL(window.location);
@@ -303,7 +307,7 @@ $(window).scroll(function () {
         ).append(
           $("<a href='./details.html?id=" + searchData.events[i].id + "&lat=" + eventLat + "&lng=" + eventLng + "' target=_blank class='card-link'>"
           ).append(
-            $("<div class='card'>").append(
+            $("<div class='card result__card mb-md-3 mb-4'>").append(
               $(
                 "<img src='" +
                 imgUrl +
