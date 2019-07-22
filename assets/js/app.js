@@ -2,7 +2,6 @@
 // VARIABLES
 //--------------------------------------------------
 
-// Starts a query when the "Search" button is clicked
 var searchData;
 var searchDataNext;
 
@@ -55,6 +54,25 @@ function searchDetails() {
     location.href = siteURL + 'index.html';
 }
 
+function grabImg(imgArray) {
+    var minWidth = 1000;
+    var imgFound = false;
+    var imgUrl;
+    for (let j = 0; j < imgArray.length; j++) {
+        if (
+            imgArray[j].width >= minWidth &&
+            imgArray[j].ratio === '16_9'
+        ) {
+            imgUrl = imgArray[j].url;
+            imgFound = true;
+        }
+    }
+    if (!imgFound) {
+        imgUrl = imgArray[0].url;
+    }
+    return imgUrl
+}
+
 function mainSearch() {
     var keyword = $('#js-input-search').val().trim();
 
@@ -84,25 +102,16 @@ function mainSearch() {
             console.log(res);
             console.log(searchData);
 
-            searchDataNext = res._links.next.href
+            if (_.has(res._links.next, "href")) {                
+                searchDataNext = res._links.next.href
+            } else {
+                searchDataNext = undefined
+            }
 
             // Creates cards for each matching result
             for (let i = 0; i < searchData.events.length; i++) {
-                var minWidth = 1000;
-                var imgFound = false;
-                var imgUrl;
-                for (let j = 0; j < searchData.events[i].images.length; j++) {
-                    if (
-                        searchData.events[i].images[j].width >= minWidth &&
-                        searchData.events[i].images[j].ratio === '16_9'
-                    ) {
-                        imgUrl = searchData.events[i].images[j].url;
-                        imgFound = true;
-                    }
-                }
-                if (!imgFound) {
-                    imgUrl = searchData.events[i].images[0].url;
-                }
+                var imgUrl = grabImg(searchData.events[i].images)
+
                 console.log('card making running');
                 var newCard = $(
                     "<div class='col-12 col-md-6 col-lg-3'>"
@@ -235,14 +244,23 @@ $(document).ready(function () {
             console.log(res);
             console.log(searchData);
 
+            var imgUrl = grabImg(res.images)
+
+            $("#js-details-image").attr("src", imgUrl)
+
             // Adds info to the brief section
             checkForValue(res, 'name', '#js-brief-event');
             checkForValue(res.dates.start, 'localDate', '#js-brief-date');
-            $('#js-brief-time').text(
-                moment(res.dates.start.localTime, 'HH:mm:SS').format(
-                    'hh:mm A'
-                )
-            );
+
+            if (_.has(res.dates.start, "localTime")) {
+                $('#js-brief-time').text(
+                    moment(res.dates.start.localTime, 'HH:mm:SS').format(
+                        'hh:mm A'
+                    )
+                );
+            } else {
+                $('#js-brief-time').text("No time available.")
+            }
             checkForValue(
                 res._embedded.venues[0],
                 'name',
@@ -277,7 +295,7 @@ $(document).ready(function () {
 });
 
 $(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() > $(document).height() - 1) {
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - 1 && searchDataNext !== undefined) {
         var queryURL =
             'https://app.ticketmaster.com' + searchDataNext + '&apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5'
 
@@ -288,25 +306,17 @@ $(window).scroll(function () {
             searchData = res._embedded;
             console.log(res);
             console.log(searchData);
-            searchDataNext = res._links.next.href
+
+            if (_.has(res._links.next, "href")) {                
+                searchDataNext = res._links.next.href
+            } else {
+                searchDataNext = undefined
+            }
 
             // Creates cards for each matching result
             for (let i = 0; i < searchData.events.length; i++) {
-                var minWidth = 1000;
-                var imgFound = false;
-                var imgUrl;
-                for (let j = 0; j < searchData.events[i].images.length; j++) {
-                    if (
-                        searchData.events[i].images[j].width >= minWidth &&
-                        searchData.events[i].images[j].ratio === '16_9'
-                    ) {
-                        imgUrl = searchData.events[i].images[j].url;
-                        imgFound = true;
-                    }
-                }
-                if (!imgFound) {
-                    imgUrl = searchData.events[i].images[0].url;
-                }
+                var imgUrl = grabImg(searchData.events[i].images)
+
                 console.log('card making running');
                 var newCard = $(
                     "<div class='col-12 col-md-6 col-lg-3'>"
@@ -347,7 +357,6 @@ $(window).scroll(function () {
                 $('#js-results').append(newCard);
             }
         });
-
     }
 });
 
