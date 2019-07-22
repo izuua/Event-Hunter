@@ -7,42 +7,115 @@ body {
 
 /* Navbar */
 .navbar {
-	background-color: $accent-color;
+	background-color: $light-blue;
 }
 
 .navbar-brand {
 	color: $primary-color;
 }
 
+.navbar__toggler {
+	padding: 1em 0.5em;
+	border: 1px solid $primary-color;
+
+	&:hover,
+	&:focus {
+		outline: none;
+		background-color: $med-blue;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans;
+	}
+
+	&:active {
+		background-color: $dark-blue;
+		border-color: $dark-blue;
+		box-shadow: 0 0 0 0.2rem $dark-blue-trans !important;
+	}
+}
+
+.navbar__toggler-icon {
+	display: block;
+	height: 2px;
+	width: 30px;
+	background-color: $primary-color;
+
+	&::before,
+	&::after {
+		content: "";
+		display: block;
+		height: 2px;
+		width: 30px;
+		background-color: $primary-color;
+	}
+
+	&::before {
+		transform: translateY(-10px);
+	}
+
+	&::after {
+		transform: translateY(8px);
+	}
+}
+
 /* Input */
-.input {
+.input--light {
 	outline: none;
-	border-color: $accent-color;
+	border-color: $light-blue;
 	color: $contrast-color;
 
 	&:focus,
 	&:active {
 		color: $contrast-color;
-		box-shadow: 0 0 0 0.2rem $accent-color-trans;
+		box-shadow: 0 0 0 0.2rem $light-blue-trans;
 	}
 }
 
-.input__btn {
-	border-color: $accent-color;
+.input__btn--light {
+	border-color: $light-blue;
 	color: $contrast-color;
 
 	&:hover,
 	&:focus {
-		background-color: $accent-color;
-		border-color: $accent-color;
+		background-color: $light-blue;
+		border-color: $light-blue;
 		color: $primary-color;
-		box-shadow: 0 0 0 0.2rem $accent-color-trans;
+		box-shadow: 0 0 0 0.2rem $light-blue-trans;
 	}
 
 	&:not(:disabled):not(.disabled):active {
-		background-color: $accent-color-dark;
-		border-color: $accent-color-dark;
-		box-shadow: 0 0 0 0.2rem $accent-color-dark-trans !important;
+		background-color: $med-blue;
+		border-color: $med-blue;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans !important;
+	}
+}
+
+.input--med {
+	outline: none;
+	border-color: $primary-color;
+	color: $contrast-color;
+
+	&:focus,
+	&:active {
+		color: $contrast-color;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans;
+	}
+}
+
+.input__btn--med {
+	border-color: $primary-color;
+	color: $primary-color;
+
+	&:hover,
+	&:focus {
+		background-color: $med-blue;
+		border-color: $med-blue;
+		color: $primary-color;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans;
+	}
+
+	&:not(:disabled):not(.disabled):active {
+		background-color: $dark-blue;
+		border-color: $dark-blue;
+		box-shadow: 0 0 0 0.2rem $dark-blue-trans !important;
 	}
 }
 
@@ -52,7 +125,7 @@ body {
 }
 
 .result__key {
-	color: $accent-color;
+	color: $light-blue;
 }
 
 .result__card {
@@ -60,13 +133,13 @@ body {
 	transition: all 300ms;
 	&:hover,
 	&:focus {
-		background-color: $accent-color;
+		background-color: $light-blue;
 		color: $primary-color;
-		box-shadow: 0 0 0 0.2rem $accent-color-trans;
+		box-shadow: 0 0 0 0.2rem $light-blue-trans;
 	}
 }
 
 .footer {
-	background-color: $accent-color;
+	background-color: $light-blue;
 	color: $primary-color;
 }
