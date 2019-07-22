@@ -37,24 +37,29 @@ function initMap() {
 
 function initWeather(lat, lng) {
 
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lng + "&APPID=" + openWeatherKey;
+    if (lat) {
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lng + "&APPID=" + openWeatherKey;
 
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function (res) {
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (res) {
 
-        var temp = (res.main.temp * (9 / 5) - 459.67).toFixed(1)
-        var desc = res.weather[0].description
-        $("#js-details-temp").html(temp + "&deg")
-        $("#js-details-weather").text(desc)
-    })
+            var temp = (res.main.temp * (9 / 5) - 459.67).toFixed(1)
+            var desc = res.weather[0].description
+            console.log(res.main.temp);
+            $("#js-details-temp").html(temp + "&deg")
+            $("#js-details-weather").text(desc)
+        })
+    }
+
+
 }
 
 function searchDetails() {
     var searchKeyword = $('#js-input-details-search').val().trim();
     localStorage.setItem('searchKeyword', searchKeyword);
-    location.href = siteURL + 'index.html';
+    window.open(siteURL + 'index.html?keyword=' + searchKeyword, '_blank');
 }
 
 function grabImg(imgArray) {
@@ -139,6 +144,9 @@ function mainSearch() {
                                 ),
                                 $("<p class='card-text'>").text(
                                     searchData.events[i]._embedded.venues[0].name
+                                ),
+                                $("<p class='card-text'>").text(
+                                    searchData.events[i]._embedded.venues[0].city.name + ", " + searchData.events[i]._embedded.venues[0].state.stateCode
                                 )
                             )
                         )
@@ -172,16 +180,18 @@ function checkForValue(object, keyName, textNode) {
 $(document).ready(function () {
     // Current brower href
     var pageRef = window.location.href;
+    var currentUrl = new URL(window.location);
+    var searchParams = new URLSearchParams(currentUrl.search);
 
     // Checks if details.html or index.html is active
     if (pageRef.search('details') === -1) {
         console.log('You are on the index page');
-        if (localStorage.getItem('searchKeyword')) {
+        if (searchParams.get("keyword") !== null && searchParams.get("keyword") !== undefined) {
             $('#js-input-search').val(
-                localStorage.getItem('searchKeyword')
+                searchParams.get("keyword")
             );
             mainSearch();
-            localStorage.removeItem('searchKeyword');
+
         }
     } else {
         console.log('Details page!!!');
@@ -235,6 +245,10 @@ $(document).ready(function () {
                 'line1',
                 '#js-brief-address'
             );
+            $("#js-brief-city").text(res._embedded.venues[0].city.name);
+            $("#js-brief-state").text(res._embedded.venues[0].state.stateCode);
+            $("#js-brief-zip").text(res._embedded.venues[0].postalCode);
+
 
             // Adds info to the details section
             checkForValue(res, 'name', '#js-details-event');
@@ -289,7 +303,7 @@ $(window).scroll(function () {
                 ).append(
                     $("<a href='./details.html?id=" + searchData.events[i].id + "&lat=" + eventLat + "&lng=" + eventLng + "' target=_blank class='card-link'>"
                     ).append(
-                        $("<div class='card'>").append(
+                        $("<div class='card result__card mb-md-3 mb-4'>").append(
                             $(
                                 "<img src='" +
                                 imgUrl +
@@ -306,6 +320,9 @@ $(window).scroll(function () {
                                 ),
                                 $("<p class='card-text'>").text(
                                     searchData.events[i]._embedded.venues[0].name
+                                ),
+                                $("<p class='card-text'>").text(
+                                    searchData.events[i]._embedded.venues[0].city.name + ", " + searchData.events[i]._embedded.venues[0].state.stateCode
                                 )
                             )
                         )
