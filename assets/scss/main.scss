@@ -69,7 +69,7 @@ body {
 	}
 }
 
-.input__btn--light {
+.btn--light {
 	border-color: $light-blue;
 	color: $contrast-color;
 
@@ -100,9 +100,10 @@ body {
 	}
 }
 
-.input__btn--med {
+.btn--med {
 	border-color: $primary-color;
 	color: $primary-color;
+	background-color: $light-blue;
 
 	&:hover,
 	&:focus {
@@ -139,6 +140,51 @@ body {
 	}
 }
 
+.result__info {
+	font-size: $fs-brief;
+}
+
+/* Brief */
+.brief__date {
+	font-weight: 500;
+	font-size: $fs-brief;
+	margin-bottom: 0;
+}
+
+.brief__time {
+	font-size: $fs-brief
+}
+
+.brief__address {
+	margin: 0;
+	font-size: $fs-brief
+}
+
+.brief__link {
+	color: $light-blue;
+
+	&:hover, 
+	&:focus {
+		color: $med-blue;
+	}
+}
+
+/* Details */
+.details__text {
+	font-size: $fs-brief;
+	text-align: justify;
+}
+
+.details__strong,
+.details__temp {
+	font-weight: 500; 
+}
+
+.details__genre {
+	font-size: 1.1em
+}
+
+/* Footer */
 .footer {
 	background-color: $light-blue;
 	color: $primary-color;
