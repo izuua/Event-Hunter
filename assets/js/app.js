@@ -138,16 +138,16 @@ function searchCall(res) {
             "' class='card-img-top'>"
           ),
           $("<div class='card-body'>").append(
-            $("<h5 class='card-title'>").text(
+            $("<h5 class='card-title mb-1'>").text(
               searchData.events[i].name
             ),
             $("<p class='card-text'>").text(
               searchData.events[i].dates.start.localDate
             ),
-            $("<p class='card-text'>").text(
+            $("<p class='card-text mb-0'>").text(
               searchData.events[i]._embedded.venues[0].name
             ),
-            $("<p class='card-text'>").text(
+            $("<p class='card-text result__info'>").text(
               searchData.events[i]._embedded.venues[0].city.name + ", " + searchData.events[i]._embedded.venues[0].state.stateCode
             )
           )
@@ -267,7 +267,11 @@ $(document).ready(function () {
         $("#js-brief-city").text(res._embedded.venues[0].city.name);
         $("#js-brief-state").text(res._embedded.venues[0].state.stateCode);
         $("#js-brief-zip").text(res._embedded.venues[0].postalCode);
-
+        //puts location info in convenience variables
+        var address = JSON.stringify(res._embedded.venues[0].address.line1)
+        var city = JSON.stringify(res._embedded.venues[0].city.name)
+        var state = JSON.stringify(res._embedded.venues[0].state.stateCode)
+        var zip = JSON.stringify(res._embedded.venues[0].postalCode)
 
         // Adds info to the details section
         checkForValue(res, 'name', '#js-details-event');
@@ -277,16 +281,16 @@ $(document).ready(function () {
           'name',
           '#js-details-location'
         );
-        $('#js-details-tickets').html(
-          '<a href=' + res.url + " target='_blank'>Click Here"
-        );
-        checkForValue(
-          res.classifications[0].segment,
-          'name',
-          '#js-details-genre'
-        );
+        $('#js-details-tickets').attr("href", res.url + " target='_blank'>Click Here");
+        // checkForValue(
+        //   res.classifications[0].segment,
+        //   'name',
+        //   '#js-details-genre'
+        // );
         checkForValue(res, 'pleaseNote', '#js-details-note');
         checkForValue(res, 'info', '#js-details-info');
+        //adds link to google maps with venue address
+        $("#js-brief-link").attr("href", `https://www.google.com/maps?q=${address}+${city}+${state}+${zip}`)
       });
     }
   }
