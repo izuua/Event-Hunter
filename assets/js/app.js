@@ -4,7 +4,7 @@
 var searchData;
 var searchDataNext;
 
-var siteURL = 'http://127.0.0.1:5501/Project-1/';
+var siteURL = 'file:///C:/Users/cmyer/Desktop/Bootcamp/Project-1/';
 
 var openWeatherKey = "280deca1e7bba83d640479281597834f";
 //==================================================
@@ -120,8 +120,41 @@ function searchCall(res) {
   // Creates cards for each matching result
   for (let i = 0; i < searchData.events.length; i++) {
     var imgUrl = grabImg(searchData.events[i].images)
-    var eventLat = searchData.events[i]._embedded.venues[0].location.latitude
-    var eventLng = searchData.events[i]._embedded.venues[0].location.longitude
+    var eventLat = null
+    var eventLng = null
+    var cityName = "N/A"
+    var stateCode = "N/A"
+    var venueName = "Venue Unavailable"
+
+    if (_.has(searchData.events[i], "place")) {
+      eventLat = searchData.events[i].place.location.latitude
+      eventLng = searchData.events[i].place.location.longitude
+      cityName = searchData.events[i].place.city.name || "N/A"
+      if (searchData.events[i].place.countryCode === "US") {
+        stateCode = searchData.events[i].place.state.stateCode || "N/A"
+      } else {
+        stateCode = searchData.events[i].place.country.countryCode || "N/A"
+      }
+    } else if (_.has(searchData.events[i], "_embedded")) {
+      if (_.has(searchData.events[i]._embedded.venues[0], "location")) {
+        eventLat = searchData.events[i]._embedded.venues[0].location.latitude
+        eventLng = searchData.events[i]._embedded.venues[0].location.longitude
+      }
+      if (_.has(searchData.events[i]._embedded.venues[0], "city")) {
+        cityName = searchData.events[i]._embedded.venues[0].city.name || "N/A"
+        if (searchData.events[i]._embedded.venues[0].country.countryCode === "US") {
+          stateCode = searchData.events[i]._embedded.venues[0].state.stateCode || "N/A"
+        } else {
+          stateCode = searchData.events[i]._embedded.venues[0].country.countryCode || "N/A"
+        }
+      }
+    }
+
+    if (_.has(searchData.events[i], "_embedded")) {
+      if (_.has(searchData.events[i]._embedded.venues[0], "name")) {
+        venueName = searchData.events[i]._embedded.venues[0].name || "N/A"
+      }
+    }
 
     console.log('card making running');
     var newCard = $(
@@ -142,13 +175,13 @@ function searchCall(res) {
               searchData.events[i].name
             ),
             $("<p class='card-text'>").text(
-              searchData.events[i].dates.start.localDate
+              moment(searchData.events[i].dates.start.localDate, "YYYY-MM-DD").format("MMMM Do YYYY")
             ),
             $("<p class='card-text mb-0'>").text(
-              searchData.events[i]._embedded.venues[0].name
+              venueName
             ),
             $("<p class='card-text result__info'>").text(
-              searchData.events[i]._embedded.venues[0].city.name + ", " + searchData.events[i]._embedded.venues[0].state.stateCode
+              cityName + ", " + stateCode
             )
           )
         )
@@ -191,6 +224,7 @@ $(document).ready(function () {
         searchParams.get("keyword")
       );
       mainSearch();
+
     }
   } else {
     console.log('Details page!!!');
@@ -201,98 +235,107 @@ $(document).ready(function () {
 
     var currentUrl = new URL(window.location);
     var searchParams = new URLSearchParams(currentUrl.search);
+    console.log(searchParams);
 
-    // Checks if details.html or index.html is active
-    if (pageRef.search('details') === -1) {
-      console.log('You are on the index page');
-      if (searchParams.get("keyword") !== null && searchParams.get("keyword") !== undefined) {
-        $('#js-input-search').val(
-          searchParams.get("keyword")
-        );
-        mainSearch();
+    var detailsID = searchParams.get("id");
+    var queryURL =
+      'https://app.ticketmaster.com/discovery/v2/events/' +
+      detailsID +
+      '?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&locale=*&includeSpellcheck=yes';
 
-      }
-    } else {
-      console.log('Details page!!!');
-      $('#js-btn-details-search').on('click', function (e) {
-        e.preventDefault();
-        searchDetails();
-      });
+    $.ajax({
+      url: queryURL,
+      method: 'GET'
+    }).then(function (res) {
+      console.log(res);
+      var imgUrl = grabImg(res.images)
+      $("#js-details-image").attr("src", imgUrl)
 
-      var currentUrl = new URL(window.location);
-      var searchParams = new URLSearchParams(currentUrl.search);
-      console.log(searchParams);
+      var cityName = "N/A"
+      var stateCode = "N/A"
+      var address = "N/A"
+      var postalCode = "N/A"
+      var venueName = "Venue Unavailable"
 
-      var detailsID = searchParams.get("id");
-      var queryURL =
-        'https://app.ticketmaster.com/discovery/v2/events/' +
-        detailsID +
-        '?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&locale=*&includeSpellcheck=yes';
-
-      $.ajax({
-        url: queryURL,
-        method: 'GET'
-      }).then(function (res) {
-        searchData = res._embedded;
-        console.log(res);
-        console.log(searchData);
-
-        var imgUrl = grabImg(res.images)
-
-        $("#js-details-image").attr("src", imgUrl)
-
-        // Adds info to the brief section
-        checkForValue(res, 'name', '#js-brief-event');
-        checkForValue(res.dates.start, 'localDate', '#js-brief-date');
-
-        if (_.has(res.dates.start, "localTime")) {
-          $('#js-brief-time').text(
-            moment(res.dates.start.localTime, 'HH:mm:SS').format(
-              'hh:mm A'
-            )
-          );
+      if (_.has(res, "place")) {
+        cityName = res.place.city.name || "N/A"
+        if (res.place.countryCode === "US") {
+          stateCode = res.place.state.stateCode || "N/A"
         } else {
-          $('#js-brief-time').text("No time available.")
+          stateCode = res.place.country.countryCode || "N/A"
         }
-        checkForValue(
-          res._embedded.venues[0],
-          'name',
-          '#js-brief-location'
-        );
-        checkForValue(
-          res._embedded.venues[0].address,
-          'line1',
-          '#js-brief-address'
-        );
-        $("#js-brief-city").text(res._embedded.venues[0].city.name);
-        $("#js-brief-state").text(res._embedded.venues[0].state.stateCode);
-        $("#js-brief-zip").text(res._embedded.venues[0].postalCode);
-        //puts location info in convenience variables
-        var address = JSON.stringify(res._embedded.venues[0].address.line1)
-        var city = JSON.stringify(res._embedded.venues[0].city.name)
-        var state = JSON.stringify(res._embedded.venues[0].state.stateCode)
-        var zip = JSON.stringify(res._embedded.venues[0].postalCode)
+        address = res.place.address.line1 || "N/A"
+        postalCode = res.place.postalCode || "N/A"
+      } else if (_.has(res, "_embedded")) {
+        if (_.has(res._embedded.venues[0], "city")) {
+          cityName = res._embedded.venues[0].city.name || "N/A"
+          if (res._embedded.venues[0].country.countryCode === "US") {
+            stateCode = res._embedded.venues[0].state.stateCode || "N/A"
+          } else {
+            stateCode = res._embedded.venues[0].country.countryCode || "N/A"
+          }
+          address = res._embedded.venues[0].address.line1 || "N/A"
+          postalCode = res._embedded.venues[0].postalCode || "N/A"
+        }
+      }
 
-        // Adds info to the details section
-        checkForValue(res, 'name', '#js-details-event');
-        checkForValue(res.dates.start, 'localDate', '#js-details-date');
-        checkForValue(
-          res._embedded.venues[0],
-          'name',
-          '#js-details-location'
+      if (_.has(res, "_embedded")) {
+        if (_.has(res._embedded.venues[0], "name")) {
+          venueName = res._embedded.venues[0].name || "N/A"
+        }
+      }
+
+      // Adds info to the brief section
+      checkForValue(res, 'name', '#js-brief-event');
+      checkForValue(res.dates.start, 'localDate', '#js-brief-date');
+
+      if (_.has(res.dates.start, "localDate")) {
+        $("#js-brief-date").text(
+          moment(res.dates.start.localDate, "YYYY-MM-DD").format(
+            "MMMM Do YYYY"
+          )
+        )
+      } else {
+        $("#js-brief-date").text("No date available.")
+      }
+
+      if (_.has(res.dates.start, "localTime")) {
+        $('#js-brief-time').text(
+          moment(res.dates.start.localTime, 'HH:mm:SS').format(
+            'hh:mm A'
+          )
         );
-        $('#js-details-tickets').attr("href", res.url + " target='_blank'>Click Here");
-        // checkForValue(
-        //   res.classifications[0].segment,
-        //   'name',
-        //   '#js-details-genre'
-        // );
-        checkForValue(res, 'pleaseNote', '#js-details-note');
-        checkForValue(res, 'info', '#js-details-info');
-        //adds link to google maps with venue address
-        $("#js-brief-link").attr("href", `https://www.google.com/maps?q=${address}+${city}+${state}+${zip}`)
-      });
-    }
+      } else {
+        $('#js-brief-time').text("No time available.")
+      }
+
+      $("#js-brief-location").text(venueName)
+      $("#js-brief-address").text(address)
+      $("#js-brief-city").text(cityName);
+      $("#js-brief-state").text(stateCode);
+      $("#js-brief-zip").text(postalCode);
+      //puts location info in convenience variables
+      var address = JSON.stringify(address)
+      var city = JSON.stringify(cityName)
+      var state = JSON.stringify(stateCode)
+      var zip = JSON.stringify(postalCode)
+
+      // Adds info to the details section
+      checkForValue(res, 'name', '#js-details-event');
+      checkForValue(res.dates.start, 'localDate', '#js-details-date');
+      $("#js-details-location").text(venueName)
+
+      $('#js-details-tickets').attr("href", res.url);
+      // checkForValue(
+      //   res.classifications[0].segment,
+      //   'name',
+      //   '#js-details-genre'
+      // );
+      checkForValue(res, 'pleaseNote', '#js-details-note');
+      checkForValue(res, 'info', '#js-details-info');
+      //adds link to google maps with venue address
+      $("#js-brief-link").attr("href", `https://www.google.com/maps?q=${address}+${city}+${state}+${zip}`)
+    });
   }
 });
 
