@@ -9,6 +9,12 @@
 	color: $white;
 }
 
+.input--absolute {
+	position: absolute;
+	right: 15px;
+	bottom: 8px;
+}
+
 /* Theme Toggler */
 .toggle__check {
 	height: 0;
@@ -21,7 +27,8 @@
 
 	&:checked + .toggle__switch::after {
 		left: calc(100% - 3px);
-		transform: translateX(-100%)
+		transform: translateX(-100%);
+		background-image: url(/Project-1//assets//img/iconMoon.svg);
 	}
 }
 
@@ -38,6 +45,11 @@
 
 	&::after {
 		content: "";
+		background-image: url(/Project-1/assets/img/iconSun.svg);
+		background-size: 90%;
+		background-repeat: no-repeat;
+		background-position-x: 1px;
+		background-position-y: 1px;
 		position: absolute;
 		top: 3px;
 		left: 3px;
@@ -46,11 +58,20 @@
 		background-color: #fff;
 		border-radius: 50%;
 		transition: 300ms;
+		
+		transition: background-image 0.3s ease;
+
 	}
 }
 
 .toggle__label {
 	color: $white;
+}
+
+.toggle__container {
+	position: absolute;
+	right: 300px;
+	top: -7px;
 }
 
 /* Hamburger Icon */
@@ -160,10 +181,7 @@
 	}
 }
 
-
-
 /* Result Cards */
-
 .result__header {
 	margin: 1em 0;
 }
@@ -186,8 +204,6 @@
 .result__info {
 	font-size: $fs-brief;
 }
-
-
 
 /* Brief */
 .brief__date {
@@ -280,4 +296,11 @@ body {
 
 .btn--dark {
 	color: $white;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+	.toggle__container {
+		right: 70px;
+	}
 }
