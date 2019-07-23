@@ -311,30 +311,24 @@ $(document).ready(function () {
 
       $("#js-brief-location").text(venueName)
       $("#js-brief-address").text(address)
-      $("#js-brief-city").text(cityName);
-      $("#js-brief-state").text(stateCode);
+      $("#js-brief-city").text(cityName + ", ");
+      $("#js-brief-state").text(stateCode + " ");
       $("#js-brief-zip").text(postalCode);
-      //puts location info in convenience variables
-      var address = JSON.stringify(address)
-      var city = JSON.stringify(cityName)
-      var state = JSON.stringify(stateCode)
-      var zip = JSON.stringify(postalCode)
 
       // Adds info to the details section
       checkForValue(res, 'name', '#js-details-event');
       checkForValue(res.dates.start, 'localDate', '#js-details-date');
       $("#js-details-location").text(venueName)
-
       $('#js-details-tickets').attr("href", res.url);
-      // checkForValue(
-      //   res.classifications[0].segment,
-      //   'name',
-      //   '#js-details-genre'
-      // );
       checkForValue(res, 'pleaseNote', '#js-details-note');
       checkForValue(res, 'info', '#js-details-info');
+      
       //adds link to google maps with venue address
-      $("#js-brief-link").attr("href", `https://www.google.com/maps?q=${address}+${city}+${state}+${zip}`)
+      if (address === "N/A") {
+        $("#js-brief-link").attr("href", `#`)
+      } else {
+        $("#js-brief-link").attr("href", `https://www.google.com/maps?q=${address}+${cityName}+${stateCode}+${postalCode}`)
+      }
     });
   }
 });
