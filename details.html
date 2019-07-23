@@ -81,11 +81,19 @@
 						<div class="card mb-4">
 							<div class="card-body">
 								<p class="card-text brief__date">
-									Date: <span id="js-brief-date"></span>
+									Date: <span class="brief--bold" id="js-brief-date"></span>
 								</p>
-								<p class="card-text brief__time">
-									Time: <span id="js-brief-time"></span>
+								<p class="card-text brief__time mb-0">
+									Time: <span class="brief--bold" id="js-brief-time"></span>
 								</p>
+								<div class="mr-auto mb-3">
+									<p
+										class="card-text mb-0">Exp. Temp:
+										<span id="js-details-temp" class="brief--bold"></span>
+									</p>
+									<p id="js-details-weather"
+										class="card-text text-capitalize"></p>
+								</div>
 								<!-- Picture of Map -->
 								<a id="js-brief-link" class="brief__link" href="#">
 									<p class="card-text brief__address">
@@ -107,27 +115,17 @@
 
 					<!-- Details -->
 					<div class="col-12 col-md-8 col-lg-9 mx-auto mb-5">
-						<div class="card mb-3">
+						<div class="card">
 							<img src="#" alt="" class="card-img-top" id="js-details-image">
 							<div class="card-body">
 								<!-- Weather -->
-								<div class="d-flex mb-3 justify-content-between">
-									<div class="details__weather mr-auto">
-										<p id="js-details-temp"
-											class="card-text mb-0 details__temp"></p>
-										<p id="js-details-weather"
-											class="card-text mb-0 text-capitalize"></p>
-									</div>
-									<!-- Event Type -->
-									<!-- <p id="js-details-genre"
-										class="card-text mx-4 mb-0 text-uppercase
-										align-self-center details__genre"></p> -->
+								<div class="d-flex mb-3 justify-content-end">
 									<!-- Link to tickets -->
 									<a id="js-details-tickets"
 										class="card-text btn btn-outline-secondary btn--med
 										align-self-center"
 										href="#">
-										Buy Tickets
+										<i class="fas fa-ticket-alt"></i> Buy Tickets
 									</a>
 								</div>
 								<!-- Main Card Body -->
@@ -148,9 +146,68 @@
 		</main>
 
 		<!-- Footer -->
-		<footer class="fixed-bottom py-1 mt-auto footer text-center">
+		<footer class="py-3 mt-auto footer text-right">
 			<div class="container">
-				<span>Footer</span>
+				<h6 class="footer__title navbar-brand">Created By</h6>
+				<p class="footer__info">
+					<a class="footer__link" title="Portfolio"
+						href="https://anees05.github.io/Responsive-Portfolio/">
+						Anees Adams
+					</a> |
+					<a class="footer__link"
+						href="https://www.linkedin.com/in/anees-adams-606043188/">
+						LinkedIn
+					</a> |
+					<a class="footer__link"
+						href="https://github.com/anees05">
+						GitHub
+					</a>
+				</p>
+				<p class="footer__info">
+					<a class="footer__link" title="Portfolio"
+						href="">
+						Michael Beck
+					</a>
+					|
+					<a class="footer__link"
+						href="">
+						LinkedIn
+					</a> |
+					<a class="footer__link"
+						href="">
+						GitHub
+					</a>
+				</p>
+				<p class="footer__info">
+					<a class="footer__link" title="Portfolio"
+						href="">
+						Cassidy Groenendaal
+					</a>
+					|
+					<a class="footer__link"
+						href="">
+						LinkedIn
+					</a> |
+					<a class="footer__link"
+						href="https://github.com/cassidygroenendaal">
+						GitHub
+					</a>
+				</p>
+				<p class="footer__info">
+					<a class="footer__link" title="Portfolio"
+						href="https://caleblmyers.github.io/index.html">
+						Caleb Myers
+					</a>
+					|
+					<a class="footer__link"
+						href="">
+						LinkedIn
+					</a> |
+					<a class="footer__link"
+						href="https://github.com/caleblmyers">
+						GitHub
+					</a>
+				</p>
 			</div>
 		</footer>
 

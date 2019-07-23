@@ -146,9 +146,12 @@ body {
 
 /* Brief */
 .brief__date {
-	font-weight: 500;
 	font-size: $fs-brief;
 	margin-bottom: 0;
+}
+
+.brief--bold {
+	font-weight: 500;
 }
 
 .brief__time {
@@ -188,4 +191,20 @@ body {
 .footer {
 	background-color: $light-blue;
 	color: $primary-color;
+}
+
+.footer__title {
+	margin: 0;
+}
+
+.footer__info {
+	margin: 0;
+}
+
+.footer__link {
+	color: $primary-color;
+	&:hover,
+	&:focus {
+		color: $dark-blue;
+	}
 }
