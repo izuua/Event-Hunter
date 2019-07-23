@@ -1,15 +1,5 @@
 @import "variables";
 
-/* Set Up */
-body {
-	background-color: $white;
-}
-
-.body--dark {
-	background-color: $dark-bg;
-	color: $white;
-}
-
 /* Navbar */
 .navbar {
 	background-color: $light-blue;
@@ -170,7 +160,10 @@ body {
 	}
 }
 
+
+
 /* Result Cards */
+
 .result__header {
 	margin: 1em 0;
 }
@@ -193,6 +186,8 @@ body {
 .result__info {
 	font-size: $fs-brief;
 }
+
+
 
 /* Brief */
 .brief__date {
@@ -257,4 +252,32 @@ body {
 	&:focus {
 		color: $dark-blue;
 	}
+}
+
+/* Set Up */
+html.transition,
+html.transition *,
+html.transition *::before,
+html.transition *::after {
+	transition: all 750ms !important;
+	transition-delay: 0 !important;
+}
+
+body {
+	background-color: $white;
+}
+
+.body--dark {
+	background-color: $dark-bg;
+	color: $white;
+}
+
+.card--dark {
+	border: 1px solid $white-border;
+	background-color: $dark-card-bg;
+	color: $white;
+}
+
+.btn--dark {
+	color: $white;
 }

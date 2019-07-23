@@ -4,12 +4,28 @@
 var searchData;
 var searchDataNext;
 
-var siteURL = 'file:///C:/Users/izuua/BootCamp/Project-1/';
+var themeDark = false;
 
+var siteURL = 'file:///C:/Users/izuua/BootCamp/Project-1/';
 var openWeatherKey = "280deca1e7bba83d640479281597834f";
 //==================================================
 // FUNCTIONS
 //--------------------------------------------------
+
+
+function transitionTheme() {
+  $(document.documentElement).addClass("transition")
+  setTimeout(function () {
+    $(document.documentElement).removeClass("transition")
+  }, 1000);
+}
+
+function toggleTheme() {
+  $("body").toggleClass("body--dark")
+  // $(".result__card").toggleClass("card--dark")
+  $(".card").toggleClass("card--dark")
+  $(".btn--light").toggleClass("btn--dark")
+}
 
 function initMap() {
   var currentUrl = new URL(window.location);
@@ -127,6 +143,10 @@ function searchCall(res, key) {
 
     // Creates cards for each matching result
     for (let i = 0; i < searchData.events.length; i++) {
+      var classDark = "";
+      if (themeDark) {
+        classDark = "card--dark"
+      }
       var imgUrl = grabImg(searchData.events[i].images)
       var eventLat = null
       var eventLng = null
@@ -170,7 +190,7 @@ function searchCall(res, key) {
       ).append(
         $("<a href='./details.html?id=" + searchData.events[i].id + "&lat=" + eventLat + "&lng=" + eventLng + "' target=_blank class='card-link'>"
         ).append(
-          $("<div class='card result__card mb-md-3 mb-4'>").append(
+          $(`<div class='card result__card ${classDark} mb-md-3 mb-4'>`).append(
             $(
               "<img src='" +
               imgUrl +
@@ -200,16 +220,6 @@ function searchCall(res, key) {
   }
 }
 
-//==================================================
-// APP INIT
-//--------------------------------------------------
-
-$('#js-btn-search').on('click', function (e) {
-  e.preventDefault();
-  mainSearch();
-});
-
-
 function checkForValue(object, keyName, textNode) {
   if (_.has(object, keyName)) {
     $(textNode).text(object[keyName]);
@@ -218,8 +228,21 @@ function checkForValue(object, keyName, textNode) {
   }
 }
 
+//==================================================
+// APP INIT
+//--------------------------------------------------
+
 // Gets event details after the user selects an event and moves to details.html
 $(document).ready(function () {
+  $('#js-btn-search').on('click', function (e) {
+    e.preventDefault();
+    mainSearch();
+  });
+  $("#js-toggle-theme").on("change", function () {
+    themeDark = !themeDark;
+    transitionTheme();
+    toggleTheme();
+  })
   // Current brower href
   var pageRef = window.location.href;
   var currentUrl = new URL(window.location);
@@ -283,7 +306,7 @@ $(document).ready(function () {
           } else {
             stateCode = res._embedded.venues[0].country.countryCode || "N/A"
           }
-          postalCode = res._embedded.venues[0].postalCode || "N/A"  
+          postalCode = res._embedded.venues[0].postalCode || "N/A"
         }
         if (_.has(res._embedded.venues[0], "address")) {
           address = res._embedded.venues[0].address.line1 || "N/A"
