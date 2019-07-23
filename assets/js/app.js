@@ -1,18 +1,19 @@
 //==================================================
 // VARIABLES
 //--------------------------------------------------
+
 var searchData;
 var searchDataNext;
 var keyword;
 
 var themeDark = false;
 
-var siteURL = 'file:///C:/Users/izuua/BootCamp/Project-1/';
+var siteURL = 'https://github.com/cassidygroenendaal/Project-1/';
 var openWeatherKey = "280deca1e7bba83d640479281597834f";
+
 //==================================================
 // FUNCTIONS
 //--------------------------------------------------
-
 
 function transitionTheme() {
   $(document.documentElement).addClass("transition")
@@ -22,10 +23,9 @@ function transitionTheme() {
 }
 
 function toggleTheme() {
-  $("body").toggleClass("body--dark")
-  // $(".result__card").toggleClass("card--dark")
-  $(".card").toggleClass("card--dark")
-  $(".btn--light").toggleClass("btn--dark")
+  $("body").toggleClass("body--dark");
+  $(".card").toggleClass("card--dark");
+  $(".btn--light").toggleClass("btn--dark");
 }
 
 function initMap() {
@@ -107,7 +107,6 @@ function mainSearch() {
   } else {
     console.log('did search')
 
-
     var queryURL =
       'https://app.ticketmaster.com/discovery/v2/events?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&keyword=' +
       keyword +
@@ -134,7 +133,6 @@ function searchCall(res, key) {
     $("#js-display-header").html('Showing results for <span class="result__key" id="js-display-input">' + key + '</span>')
     console.log(key)
     $('#js-display-row').show();
-
 
     if (_.has(res._links.next, "href")) {
       searchDataNext = res._links.next.href
@@ -235,15 +233,26 @@ function checkForValue(object, keyName, textNode) {
 
 // Gets event details after the user selects an event and moves to details.html
 $(document).ready(function () {
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1200) {
+      $("#navbar-search").addClass("input--absolute")
+    } else {
+      $("#navbar-search").removeClass("input--absolute")
+    }
+  })
+
   $('#js-btn-search').on('click', function (e) {
     e.preventDefault();
     mainSearch();
   });
+
   $("#js-toggle-theme").on("change", function () {
     themeDark = !themeDark;
+    // $(".toggle__switch")
     transitionTheme();
     toggleTheme();
   })
+
   // Current brower href
   var pageRef = window.location.href;
   var currentUrl = new URL(window.location);
@@ -257,7 +266,6 @@ $(document).ready(function () {
         searchParams.get("keyword")
       );
       mainSearch();
-
     }
   } else {
     console.log('Details page!!!');
