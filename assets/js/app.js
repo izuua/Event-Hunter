@@ -4,7 +4,7 @@
 var searchData;
 var searchDataNext;
 
-var siteURL = 'file:///C:/Users/cmyer/Desktop/Bootcamp/Project-1/';
+var siteURL = 'file:///C:/Users/izuua/BootCamp/Project-1/';
 
 var openWeatherKey = "280deca1e7bba83d640479281597834f";
 //==================================================
@@ -88,9 +88,8 @@ function mainSearch() {
     console.log('didnt search');
     $('#js-display-row').hide();
   } else {
-    console.log('did search');
-    $('#js-display-input').text(keyword);
-    $('#js-display-row').show();
+    console.log('did search')
+
 
     var queryURL =
       'https://app.ticketmaster.com/discovery/v2/events?apikey=1CDZF2AkHAO8FPwY0r3kQm6bmxI7Vuk5&keyword=' +
@@ -101,93 +100,103 @@ function mainSearch() {
       url: queryURL,
       method: 'GET'
     }).then(function (res) {
-      searchCall(res)
+      searchCall(res, keyword)
     })
   }
 }
 
-function searchCall(res) {
+function searchCall(res, key) {
   searchData = res._embedded;
   console.log(res);
   console.log(searchData);
 
-  if (_.has(res._links.next, "href")) {
-    searchDataNext = res._links.next.href
+  if (searchData === null || searchData === undefined) {
+    $("#js-display-header").text("No results found.")
+    $('#js-display-row').show();
   } else {
-    searchDataNext = undefined
-  }
+    $("#js-display-header").html('Showing results for <span class="result__key" id="js-display-input">' + key + '</span>')
+    console.log(key)
+    $('#js-display-row').show();
 
-  // Creates cards for each matching result
-  for (let i = 0; i < searchData.events.length; i++) {
-    var imgUrl = grabImg(searchData.events[i].images)
-    var eventLat = null
-    var eventLng = null
-    var cityName = "N/A"
-    var stateCode = "N/A"
-    var venueName = "Venue Unavailable"
 
-    if (_.has(searchData.events[i], "place")) {
-      eventLat = searchData.events[i].place.location.latitude
-      eventLng = searchData.events[i].place.location.longitude
-      cityName = searchData.events[i].place.city.name || "N/A"
-      if (searchData.events[i].place.countryCode === "US") {
-        stateCode = searchData.events[i].place.state.stateCode || "N/A"
-      } else {
-        stateCode = searchData.events[i].place.country.countryCode || "N/A"
-      }
-    } else if (_.has(searchData.events[i], "_embedded")) {
-      if (_.has(searchData.events[i]._embedded.venues[0], "location")) {
-        eventLat = searchData.events[i]._embedded.venues[0].location.latitude
-        eventLng = searchData.events[i]._embedded.venues[0].location.longitude
-      }
-      if (_.has(searchData.events[i]._embedded.venues[0], "city")) {
-        cityName = searchData.events[i]._embedded.venues[0].city.name || "N/A"
-        if (searchData.events[i]._embedded.venues[0].country.countryCode === "US") {
-          stateCode = searchData.events[i]._embedded.venues[0].state.stateCode || "N/A"
+    if (_.has(res._links.next, "href")) {
+      searchDataNext = res._links.next.href
+    } else {
+      searchDataNext = undefined
+    }
+
+    // Creates cards for each matching result
+    for (let i = 0; i < searchData.events.length; i++) {
+      var imgUrl = grabImg(searchData.events[i].images)
+      var eventLat = null
+      var eventLng = null
+      var cityName = "N/A"
+      var stateCode = "N/A"
+      var venueName = "Venue Unavailable"
+
+      if (_.has(searchData.events[i], "place")) {
+        eventLat = searchData.events[i].place.location.latitude
+        eventLng = searchData.events[i].place.location.longitude
+        cityName = searchData.events[i].place.city.name || "N/A"
+        if (searchData.events[i].place.countryCode === "US") {
+          stateCode = searchData.events[i].place.state.stateCode || "N/A"
         } else {
-          stateCode = searchData.events[i]._embedded.venues[0].country.countryCode || "N/A"
+          stateCode = searchData.events[i].place.country.countryCode || "N/A"
+        }
+      } else if (_.has(searchData.events[i], "_embedded")) {
+        if (_.has(searchData.events[i]._embedded.venues[0], "location")) {
+          eventLat = searchData.events[i]._embedded.venues[0].location.latitude
+          eventLng = searchData.events[i]._embedded.venues[0].location.longitude
+        }
+        if (_.has(searchData.events[i]._embedded.venues[0], "city")) {
+          cityName = searchData.events[i]._embedded.venues[0].city.name || "N/A"
+          if (searchData.events[i]._embedded.venues[0].country.countryCode === "US") {
+            stateCode = searchData.events[i]._embedded.venues[0].state.stateCode || "N/A"
+          } else {
+            stateCode = searchData.events[i]._embedded.venues[0].country.countryCode || "N/A"
+          }
         }
       }
-    }
 
-    if (_.has(searchData.events[i], "_embedded")) {
-      if (_.has(searchData.events[i]._embedded.venues[0], "name")) {
-        venueName = searchData.events[i]._embedded.venues[0].name || "N/A"
+      if (_.has(searchData.events[i], "_embedded")) {
+        if (_.has(searchData.events[i]._embedded.venues[0], "name")) {
+          venueName = searchData.events[i]._embedded.venues[0].name || "N/A"
+        }
       }
-    }
 
-    console.log('card making running');
-    var newCard = $(
-      "<div class='col-12 col-md-6 col-lg-3'>"
-    ).append(
-      $("<a href='./details.html?id=" + searchData.events[i].id + "&lat=" + eventLat + "&lng=" + eventLng + "' target=_blank class='card-link'>"
+      console.log('card making running');
+      var newCard = $(
+        "<div class='col-12 col-md-6 col-lg-3'>"
       ).append(
-        $("<div class='card result__card mb-md-3 mb-4'>").append(
-          $(
-            "<img src='" +
-            imgUrl +
-            "' alt='" +
-            searchData.events[i].name +
-            "' class='card-img-top'>"
-          ),
-          $("<div class='card-body'>").append(
-            $("<h5 class='card-title mb-1'>").text(
-              searchData.events[i].name
+        $("<a href='./details.html?id=" + searchData.events[i].id + "&lat=" + eventLat + "&lng=" + eventLng + "' target=_blank class='card-link'>"
+        ).append(
+          $("<div class='card result__card mb-md-3 mb-4'>").append(
+            $(
+              "<img src='" +
+              imgUrl +
+              "' alt='" +
+              searchData.events[i].name +
+              "' class='card-img-top'>"
             ),
-            $("<p class='card-text'>").text(
-              moment(searchData.events[i].dates.start.localDate, "YYYY-MM-DD").format("MMMM Do YYYY")
-            ),
-            $("<p class='card-text mb-0'>").text(
-              venueName
-            ),
-            $("<p class='card-text result__info'>").text(
-              cityName + ", " + stateCode
+            $("<div class='card-body'>").append(
+              $("<h5 class='card-title mb-1'>").text(
+                searchData.events[i].name
+              ),
+              $("<p class='card-text'>").text(
+                moment(searchData.events[i].dates.start.localDate, "YYYY-MM-DD").format("MMMM Do YYYY")
+              ),
+              $("<p class='card-text mb-0'>").text(
+                venueName
+              ),
+              $("<p class='card-text result__info'>").text(
+                cityName + ", " + stateCode
+              )
             )
           )
         )
-      )
-    );
-    $('#js-results').append(newCard);
+      );
+      $('#js-results').append(newCard);
+    }
   }
 }
 
@@ -322,7 +331,7 @@ $(document).ready(function () {
       $('#js-details-tickets').attr("href", res.url);
       checkForValue(res, 'pleaseNote', '#js-details-note');
       checkForValue(res, 'info', '#js-details-info');
-      
+
       //adds link to google maps with venue address
       if (address === "N/A") {
         $("#js-brief-link").attr("href", `#`)
