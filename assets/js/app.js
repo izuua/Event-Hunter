@@ -227,19 +227,22 @@ function checkForValue(object, keyName, textNode) {
   }
 }
 
+function checkWindow() {
+  if (window.innerWidth > 1200) {
+    $("#navbar-search").addClass("input--absolute")
+  } else {
+    $("#navbar-search").removeClass("input--absolute")
+  }
+}
+
 //==================================================
 // APP INIT
 //--------------------------------------------------
 
 // Gets event details after the user selects an event and moves to details.html
 $(document).ready(function () {
-  window.addEventListener("resize", function () {
-    if (window.innerWidth > 1200) {
-      $("#navbar-search").addClass("input--absolute")
-    } else {
-      $("#navbar-search").removeClass("input--absolute")
-    }
-  })
+  checkWindow()
+  window.addEventListener("resize", checkWindow)
 
   $('#js-btn-search').on('click', function (e) {
     e.preventDefault();

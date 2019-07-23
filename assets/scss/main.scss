@@ -28,7 +28,7 @@
 	&:checked + .toggle__switch::after {
 		left: calc(100% - 3px);
 		transform: translateX(-100%);
-		background-image: url(/Project-1//assets//img/iconMoon.svg);
+		background-image: url(../img/iconMoon.svg);
 	}
 }
 
@@ -45,7 +45,7 @@
 
 	&::after {
 		content: "";
-		background-image: url(/Project-1/assets/img/iconSun.svg);
+		background-image: url(../img/iconSun.svg);
 		background-size: 90%;
 		background-repeat: no-repeat;
 		background-position-x: 1px;
@@ -70,7 +70,7 @@
 
 .toggle__container {
 	position: absolute;
-	right: 300px;
+	right: 70px;
 	top: -7px;
 }
 
@@ -299,8 +299,12 @@ body {
 }
 
 /* Media Queries */
-@media (max-width: 1200px) {
+@media (min-width: 1200px) {
 	.toggle__container {
-		right: 70px;
+		right: 300px;
+	}
+
+	.input--med {
+		width: 200px !important;
 	}
 }
