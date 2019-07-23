@@ -7,66 +7,185 @@ body {
 
 /* Navbar */
 .navbar {
-	background-color: $accent-color;
+	background-color: $light-blue;
 }
 
 .navbar-brand {
 	color: $primary-color;
 }
 
+.navbar__toggler {
+	padding: 1em 0.5em;
+	border: 1px solid $primary-color;
+
+	&:hover,
+	&:focus {
+		outline: none;
+		background-color: $med-blue;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans;
+	}
+
+	&:active {
+		background-color: $dark-blue;
+		border-color: $dark-blue;
+		box-shadow: 0 0 0 0.2rem $dark-blue-trans !important;
+	}
+}
+
+.navbar__toggler-icon {
+	display: block;
+	height: 2px;
+	width: 30px;
+	background-color: $primary-color;
+
+	&::before,
+	&::after {
+		content: "";
+		display: block;
+		height: 2px;
+		width: 30px;
+		background-color: $primary-color;
+	}
+
+	&::before {
+		transform: translateY(-10px);
+	}
+
+	&::after {
+		transform: translateY(8px);
+	}
+}
+
 /* Input */
-.input {
+.input--light {
 	outline: none;
-	border-color: $accent-color;
+	border-color: $light-blue;
 	color: $contrast-color;
 
 	&:focus,
 	&:active {
 		color: $contrast-color;
-		box-shadow: 0 0 0 0.2rem $accent-color-trans;
+		box-shadow: 0 0 0 0.2rem $light-blue-trans;
 	}
 }
 
-.input__btn {
-	border-color: $accent-color;
+.btn--light {
+	border-color: $light-blue;
 	color: $contrast-color;
 
 	&:hover,
 	&:focus {
-		background-color: $accent-color;
-		border-color: $accent-color;
+		background-color: $light-blue;
+		border-color: $light-blue;
 		color: $primary-color;
-		box-shadow: 0 0 0 0.2rem $accent-color-trans;
+		box-shadow: 0 0 0 0.2rem $light-blue-trans;
 	}
 
 	&:not(:disabled):not(.disabled):active {
-		background-color: $accent-color-dark;
-		border-color: $accent-color-dark;
-		box-shadow: 0 0 0 0.2rem $accent-color-dark-trans !important;
+		background-color: $med-blue;
+		border-color: $med-blue;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans !important;
+	}
+}
+
+.input--med {
+	outline: none;
+	border-color: $primary-color;
+	color: $contrast-color;
+
+	&:focus,
+	&:active {
+		color: $contrast-color;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans;
+	}
+}
+
+.btn--med {
+	border-color: $primary-color;
+	color: $primary-color;
+	background-color: $light-blue;
+
+	&:hover,
+	&:focus {
+		background-color: $med-blue;
+		border-color: $med-blue;
+		color: $primary-color;
+		box-shadow: 0 0 0 0.2rem $med-blue-trans;
+	}
+
+	&:not(:disabled):not(.disabled):active {
+		background-color: $dark-blue;
+		border-color: $dark-blue;
+		box-shadow: 0 0 0 0.2rem $dark-blue-trans !important;
 	}
 }
 
 /* Result Cards */
-
-.result__header{
-    margin: 1em 0;
+.result__header {
+	margin: 1em 0;
 }
 
-.result__key{
-    color: $accent-color;
-
+.result__key {
+	color: $light-blue;
 }
 
 .result__card {
-    color: $contrast-color;
-    &:hover, &:focus{
-         background-color: $accent-color;
-         color: $primary-color;
-         box-shadow: 0 0 0 0.2rem $accent-color-trans;
-    }  
+	color: $contrast-color;
+	transition: all 300ms;
+	&:hover,
+	&:focus {
+		background-color: $light-blue;
+		color: $primary-color;
+		box-shadow: 0 0 0 0.2rem $light-blue-trans;
+	}
 }
 
-.footer{
-    background-color: $accent-color;
-    color: $primary-color;
+.result__info {
+	font-size: $fs-brief;
+}
+
+/* Brief */
+.brief__date {
+	font-weight: 500;
+	font-size: $fs-brief;
+	margin-bottom: 0;
+}
+
+.brief__time {
+	font-size: $fs-brief
+}
+
+.brief__address {
+	margin: 0;
+	font-size: $fs-brief
+}
+
+.brief__link {
+	color: $light-blue;
+
+	&:hover, 
+	&:focus {
+		color: $med-blue;
+	}
+}
+
+/* Details */
+.details__text {
+	font-size: $fs-brief;
+	text-align: justify;
+}
+
+.details__strong,
+.details__temp {
+	font-weight: 500; 
+}
+
+.details__genre {
+	font-size: 1.1em
+}
+
+/* Footer */
+.footer {
+	background-color: $light-blue;
+	color: $primary-color;
 }
