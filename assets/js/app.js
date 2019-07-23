@@ -3,6 +3,7 @@
 //--------------------------------------------------
 var searchData;
 var searchDataNext;
+var keyword;
 
 var siteURL = 'file:///C:/Users/izuua/BootCamp/Project-1/';
 
@@ -77,7 +78,7 @@ function grabImg(imgArray) {
 }
 
 function mainSearch() {
-  var keyword = $('#js-input-search').val().trim();
+  keyword = $('#js-input-search').val().trim();
 
   // Clears old search results
   $('#js-results').empty();
@@ -353,7 +354,7 @@ $(window).scroll(function () {
       url: queryURL,
       method: 'GET'
     }).then(function (res) {
-      searchCall(res)
+      searchCall(res, keyword)
     })
   }
 })
