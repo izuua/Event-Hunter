@@ -35,22 +35,24 @@
 
 		<!-- Navbar -->
 		<nav class="navbar fixed-top navbar-expand-lg">
+			<!-- Navbar Brand -->
 			<span class="navbar-brand mb-0 h1">Event Hunter</span>
+			<!-- Theme Toggler -->
 			<span class="ml-auto mr-3 toggle__label">Light Mode</span>
 			<input type="checkbox" id="js-toggle-theme"
 				class="toggle__check">
 			<label for="js-toggle-theme" class="toggle__switch mr-4">Toggle</label>
+			<!-- Hamburger Icon -->
 			<button class="navbar-toggler navbar__toggler"
 				data-toggle="collapse"
 				data-target="#navbar-search">
-				<!-- <span class="navbar-toggler-icon"></span> -->
 				<span class="navbar__toggler-icon"></span>
 			</button>
+			<!-- Navbar Collapse -->
 			<div class="collapse navbar-collapse"
 				id="navbar-search">
 				<form class="text-center ml-auto mt-lg-0 mt-3"
 					id="js-form-search">
-					<!-- <label for="js-input-details-search">Search</label> -->
 					<div class="input-group">
 						<input type="text" class="form-control input--med"
 							id="js-input-details-search" required aria-label="Search"
@@ -99,7 +101,8 @@
 										class="card-text text-capitalize"></p>
 								</div>
 								<!-- Picture of Map -->
-								<a id="js-brief-link" class="brief__link" href="#">
+								<a id="js-brief-link" target="_blank"
+									class="brief__link" href="#">
 									<p class="card-text brief__address">
 										<span id="js-brief-location"></span>
 									</p>
