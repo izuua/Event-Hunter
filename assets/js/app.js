@@ -283,8 +283,10 @@ $(document).ready(function () {
           } else {
             stateCode = res._embedded.venues[0].country.countryCode || "N/A"
           }
+          postalCode = res._embedded.venues[0].postalCode || "N/A"  
+        }
+        if (_.has(res._embedded.venues[0], "address")) {
           address = res._embedded.venues[0].address.line1 || "N/A"
-          postalCode = res._embedded.venues[0].postalCode || "N/A"
         }
       }
 
