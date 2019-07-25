@@ -8,7 +8,7 @@ var keyword;
 
 var themeDark = false;
 
-var siteURL = 'https://izuua.github.io/Project-1/';
+var siteURL = 'https://izuua.github.io/Event-Hunter/';
 var openWeatherKey = '280deca1e7bba83d640479281597834f';
 
 //==================================================
