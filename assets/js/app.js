@@ -8,7 +8,7 @@ var keyword;
 
 var themeDark = false;
 
-var siteURL = 'https://cassidygroenendaal.github.io/Project-1/';
+var siteURL = 'https://izuua.github.io/Project-1/';
 var openWeatherKey = '280deca1e7bba83d640479281597834f';
 
 //==================================================
