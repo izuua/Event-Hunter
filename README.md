@@ -1,6 +1,6 @@
 # Event Hunter
 
-A userfriendly app designed to search for events using Ticketmaster API. After finding an event, you can purchase tickets
+A user friendly app designed to search for events using Ticketmaster API. After finding an event, you can purchase tickets
 
 # Instructions
 
